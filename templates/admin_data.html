@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+  <h1 style="margin: 40px;"><u>All Registered Users</u></h1>
+
+
+       {% for user in users %}
+
+        <p class="info">UserID :<b> {{ user.user_id }} </b></p>
+        <p class="info">Username :<b> {{ user.username }} </b></p>
+        <p class="info">Name :<b> {{ user.name }} </b></p>
+        <p class="info">Email:<b> {{ user.email }} </b></p>
+        <p class="info">Job Title :<b> {{ user.jobTitle }} </b></p>
+        <p class="info">Password :<b> {{ user.password }} </b></p>
+        <p class="info">Date Created :<b> {{ user.dateCreated }} </b></p>
+        <p class="info">Tasks Complete :<b> {{ user.tasksComplete }} </b></p>
+        <p class="info">Member of Team :<b> {{ user.team_id }} </b></p>
+
+            <hr>
+            <br>
+    {% endfor %}
+
+
+ <h1 style="margin: 40px;"><u>All Registered Teams</u></h1>
+
+     {% for team in teams %}
+
+        <p class="info">Team ID :<b> {{ team.team_id }} </b></p>
+        <p class="info">Team Name :<b> {{ team.team_name }}</b></p>
+        <p>Team category: {{team.team_category}}</p>
+
+            <hr>
+            <br>
+    {% endfor %}
+</body>
+</html>
+
+</body>
+</html>
