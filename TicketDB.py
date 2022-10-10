@@ -29,6 +29,7 @@ class User(db.Model):
     dateCreated = db.Column(db.DATETIME, default=func.now())
     tasksComplete = db.Column(db.Integer)
     team_id = db.Column(db.Integer, db.ForeignKey(Team.team_id))
+    team_user = db.relationship("Team", backref='User')
 
     def __init__(self, username, name, email, jobTitle, password, tasksComplete, team_id):
         self.username = username

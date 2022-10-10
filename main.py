@@ -22,7 +22,7 @@ def create_table():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return'Home Page'
+    return 'Home Page'
 
 
 @app.route('/adduser', methods=['GET', 'POST'])
@@ -71,10 +71,33 @@ def addTeam():
 def retrieveUsers():
     teams = Team.query.all()
     users = User.query.all()
-    teammembers = select([
 
-    ])
     return render_template('admin_data.html', users=users, teams=teams)
+
+@app.route('/team/javadev')
+def retrieveJava():
+    javadevs = Team.query.with_entities(Team.team_id, Team.team_name, Team.team_category, User.user_id, User.name, User.
+                                        email, User.jobTitle).join(User, Team.team_id == User.team_id).filter(Team.team_id ==
+                                                                                                              '2').all()
+
+    return render_template('javateam.html', javadevs=javadevs)
+
+@app.route('/teams')
+def AllTeams():
+
+    teams = Team.query.all()
+    return render_template('teamlist.html', teams=teams)
+
+
+@app.route('/teams/<int:chosen_id>')
+def Teaminfo(chosen_id):
+    teaminfo = Team.query.filter_by(team_id=chosen_id).first()
+    allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id == chosen_id).all()
+    if teaminfo:
+        return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
+    return f"No Team with id {id} in system"
+
+
 
 
 if __name__ == '__main__':

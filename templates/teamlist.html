@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Select a Team:</p><br>
+
+        {% for team in teams %}
+            <p><a href="/teams/{{team.team_id}}">{{ team.team_name }}</a></p><br>
+            <hr>
+            <br>
+        {% endfor %}
+</body>
+</html>
