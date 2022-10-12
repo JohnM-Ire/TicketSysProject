@@ -44,27 +44,33 @@ class User(db.Model):
         return f"{self.username}:{self.username}"
 
 
-#
-# class TeamMembers(db.Model):
-#     user_team_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-#     user_id =
-#     name =
-#     team_id =
-#     team_name =
-# class Ticket(db.Model):
-#     __tablename__ = "tickettable"
-#     ticket_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-#     item_type = db.Column(db.String(50))
-#     requested_by = db.Column(db.String(50)) #reference user.user_id foreignKey
-#     ticket_created = db.Column(db.String(50), default=func.now())
-#     description = db.Column(db.String(300))
-#     state = db.Column(db.String(20), default="Open")
-#     assign_to_group = db.Column(db.String(50)) #drop down with list of viable teams
-#     assign_to_person = db.Column() #reference user.user.id, drop down should only show team members from above
-#     email = db.Column(db.String(60))
-#     contact_num = db.Column(db.Varchar(20))
-#     priority = db.Column(db.String())
-#     summary = db.Column(db.String(50))
-#     ticket_env = db.Column(db.String(50)) #dropdown to have the env's DEV, QA, REL, PROD, OTHER
-#     ticket_sp_instruction = db.Column(db.String(200))
+class TestTicket(db.Model):
+    __tablename__ = "tickettable"
 
+    ticket_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+    ticket_user = db.relationship("User", backref='TestTicket')
+    ticket_created = db.Column(db.String(50), default=func.now())
+    description = db.Column(db.String(300))
+    state = db.Column(db.String(30), default="Open")
+    team_id = db.Column(db.Integer, db.ForeignKey(Team.team_id))
+    ticket_team = db.relationship("Team", backref='TestTicket')
+    contact_num = db.Column(db.String(20))
+    priority = db.Column(db.Integer)
+    summary = db.Column(db.String(80))
+    environment = db.Column(db.String(50)) #dropdown to have the env's DEV, QA, REL, PROD, OTHER
+    ticket_sp_instruction = db.Column(db.String(200))
+
+    def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):
+        self.user_id = user_id
+        self.description = description
+        self.state = state
+        self.team_id = team_id
+        self.contact_num = contact_num
+        self.priority = priority
+        self.summary = summary
+        self.environment = environment
+        self.ticket_sp_instruction = ticket_sp_instruction
+
+    def __repr__(self):
+        return f"{self.ticket_id}:{self.ticket_id}"

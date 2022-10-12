@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, session
 from sqlalchemy.sql import select, alias
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team
+from TicketDB import db, User, Team, TestTicket
 # from urllib.request import urlopen
 # from bs4 import BeautifulSoup
 import itertools
@@ -22,7 +22,7 @@ def create_table():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return 'Home Page'
+    return render_template('home.html')
 
 
 @app.route('/adduser', methods=['GET', 'POST'])
@@ -98,6 +98,42 @@ def Teaminfo(chosen_id):
     return f"No Team with id {id} in system"
 
 
+
+@app.route('/newticket', methods=['GET', 'POST'])
+def addNewTicket():
+    if request.method == 'GET':
+        return render_template('newTicket.html')
+
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        description = request.form['description']
+        state = request.form['state']
+        team_id = request.form['team_id']
+        contact_num = request.form['contact_num']
+        priority = request.form['priority']
+        summary = request.form['summary']
+        environment = request.form['environment']
+        ticket_sp_instruction = request.form['ticket_sp_instruction']
+
+        if user_id == "" or description == "" or team_id == "":
+            return 'Please go back and enter values for fields'
+        else:
+            newTickets = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
+                           priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
+
+            db.session.add(newTickets)
+            db.session.commit()
+            return redirect('/opentickets')
+
+
+@app.route('/opentickets')
+def allOpenTickets():
+    tickets = TestTicket.query.all()
+    # openTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
+    #               TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.priority, TestTicket.summary,
+    #                                               TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id)\
+    #     .filter(TestTicket.state == 'Open').all()
+    return render_template('openTickets.html', tickets=tickets)
 
 
 if __name__ == '__main__':
