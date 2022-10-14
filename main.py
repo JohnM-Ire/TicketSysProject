@@ -95,7 +95,7 @@ def Teaminfo(chosen_id):
     allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id == chosen_id).all()
     if teaminfo:
         return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
-    return f"No Team with id {id} in system"
+    return f"No Team with id {chosen_id} in system"
 
 
 
@@ -129,11 +129,31 @@ def addNewTicket():
 @app.route('/opentickets')
 def allOpenTickets():
     tickets = TestTicket.query.all()
-    # openTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
-    #               TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.priority, TestTicket.summary,
-    #                                               TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id)\
-    #     .filter(TestTicket.state == 'Open').all()
-    return render_template('openTickets.html', tickets=tickets)
+
+    openTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
+                  TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.priority, TestTicket.summary,
+                                                  TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,
+                  TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.state == 'Open').all()
+
+    progTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
+                  TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.priority, TestTicket.summary,
+                                                  TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,
+                  TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.state == 'In Progress').all()
+
+    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets)
+
+
+@app.route('/ticket/<int:chosen_ticket_id>')
+def viewTicket(chosen_ticket_id):
+    ticketinfo = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
+                  TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
+                                                  TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,
+                  TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
+
+    if ticketinfo:
+        return render_template('ticket.html', ticketinfo=ticketinfo)
+    return f"No Ticket with id {chosen_ticket_id} in system"
+
 
 
 if __name__ == '__main__':

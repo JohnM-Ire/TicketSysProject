@@ -6,42 +6,50 @@
 </head>
 <body>
 
- {% for ticket in tickets %}
-<p> ticket_id : {{ ticket.ticket_id }} </p>
-<p> user_id : {{ ticket.user_id }} </p>
-<p> ticket_created : {{ ticket.ticket_created }} </p>
-<p> description : {{ ticket.description }} </p>
-<p> state : {{ ticket.state }} </p>
-<p> team_id : {{ ticket.team_id }} </p>
-<p> contact_num : {{ ticket.contact_num }} </p>
-<p> priority : {{ ticket.priority }} </p>
-<p> summary : {{ ticket.summary }} </p>
-<p> environment : {{ ticket.environment }} </p>
-<p> ticket_sp_instruction : {{ ticket.ticket_sp_instruction }} </p>
+
+
+<div style="width : 100%; background-color: greenyellow; height: auto">
+    <h2>Open Tickets</h2>
+       {% for openticket in openTickets %}
+ <p>*********************************************************************</p>
+    <a href="/ticket/{{ openticket.ticket_id }}">
+        <p class="info">Ticket Number :<b> {{ openticket.ticket_id }} </b></p>
+        <p class="info">Priority  :<b> {{ openticket.priority }} </b></p>
+
+        <p class="info">Ticket State :<b> {{ openticket.state }} </b></p>
+        <p class="info">Ticket Created :<b> {{ openticket.ticket_created }} </b></p>
+        <p class="info">Requested by :<b> {{ openticket.name }} </b></p>
+        <p class="info">Assigned to Team:<b> {{ openticket.team_name }} </b></p>
+
+    <br>
+        <p class="info">Summary :<b> {{ openticket.summary }} </b></p></a>
+
+    <br>
+
+ <p>*********************************************************************</p>
     {% endfor %}
+</div>
+<div style="width : 100%; background-color: red; height: auto">
+    <h2>In-Progress Tickets</h2>
+           {% for progTicket in progTickets %}
+ <p>*********************************************************************</p>
+        <a href="/ticket/{{ progTicket.ticket_id }}">
+        <p class="info">Ticket Number :<b> {{ progTicket.ticket_id }} </b></p>
+        <p class="info">Priority  :<b> {{ progTicket.priority }} </b></p>
+
+        <p class="info">Ticket State :<b> {{ progTicket.state }} </b></p>
+        <p class="info">Ticket Created :<b> {{ progTicket.ticket_created }} </b></p>
+        <p class="info">Requested by :<b> {{ progTicket.name }} </b></p>
+        <p class="info">Assigned to Team:<b> {{ progTicket.team_name }} </b></p>
+
+    <br>
+        <p class="info">Summary :<b> {{ progTicket.summary }} </b></p></a>
 
 
-
-<!--       {% for openticket in openTickets %}-->
-
-<!--        <p class="info">ticket_id :<b> {{ openticket.ticket_id }} </b></p>-->
-<!--        <p class="info">Requestor User ID :<b> {{ openticket.user_id }} </b></p>-->
-<!--        <p class="info">Requestor Name :<b> {{ openticket.name }} </b></p>-->
-<!--        <p class="info">Ticket Created :<b> {{ openticket.ticket_created }} </b></p>-->
-<!--        <p class="info">Description:<b> {{ openticket.description }} </b></p>-->
-<!--        <p class="info">Ticket State :<b> {{ openticket.state }} </b></p>-->
-<!--        <p class="info">Assigned to team :<b> {{ openticket.team_id }} </b></p>-->
-<!--       <p class="info">Assigned to team Name :<b> {{ openticket.team_name }} </b></p>-->
-<!--        <p class="info">Contact :<b> {{ openticket.email }} </b></p>-->
-<!--        <p class="info">Priority  :<b> {{ openticket.priority }} </b></p>-->
-<!--        <p class="info">Summary :<b> {{ openticket.summary }} </b></p>-->
-<!--        <p class="info">Environment  :<b> {{ openticket.environment }} </b></p>-->
-<!--        <p class="info">Ticket special Instructions  :<b> {{ openticket.ticket_sp_instruction }} </b></p>-->
-
-
-<!--            <hr>-->
-<!--            <br>-->
-<!--    {% endfor %}-->
-
+ <p>*********************************************************************</p>
+    {% endfor %}
+</div>
+<div>
+</div>
 </body>
 </html>
