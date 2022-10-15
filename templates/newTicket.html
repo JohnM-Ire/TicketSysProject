@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
- <p>Create New Ticket/p><br>
+ <p>Create New Ticket</p><br>
          <form id="user-form" action='' method = "POST">
                 <p>Enter Requesters user ID</p>
                 <label for="user_id"></label>
@@ -13,27 +13,40 @@
                 <p>Ticket Description</p>
                 <label for="description"></label>
                 <input type = "textarea" name = "description" class="user-input"><br>
-                <p>Ticket State (leave empty for test)</p>
-                <label for="state"></label>
-                <input type = "text" name = "state" class="user-input"><br>
-                <p>Assign job to team_id</p>
+
+                <p>Assign job to Team</p>
+                <select name="team_id" class="select-boxes">
+                      {% for t in teamList %}
+                      <option value={{ t.team_id }}>{{ t.team_name }}</option>
+                      {% endfor %}
+                </select>
                 <label for="team_id"></label>
-                <input type = "text" name = "team_id" class="user-input"><br>
                 <p>Contact Number</p>
                 <label for="contact_num"></label>
                 <input type = "text" name = "contact_num" class="user-input"><br>
                 <p>Priority</p>
                 <label for="priority"></label>
-                <input type = "text" name = "priority" class="review-input"><br>
+                <select name="priority"  class="select-boxes">
+                           <option value="1">1 - Low</option>
+                           <option value="2">2 - Moderate</option>
+                           <option value="3">3 - High</option>
+                           <option value="4">4 - Critical</option>
+                </select>
                 <p>Summary </p>
                 <label for="summary"></label>
                 <input type = "text" name = "summary" class="review-input"><br>
                 <p>Environment</p>
-                <label for="environment"></label>
-                <input type = "text" name = "environment" class="review-input"><br>
+               <label for="environment"></label>
+                       <select name="environment"  class="select-boxes">
+                           <option value="DEV">Development</option>
+                           <option value="QA">Quality Assurance</option>
+                           <option value="REL">Release</option>
+                           <option value="PROD">Production</option>
+                           <option value="Other">Other</option>
+                       </select>
                 <p>Special Instructions </p>
                 <label for="ticket_sp_instruction"></label>
-                <input type = "text" name = "ticket_sp_instruction" class="review-input"><br>
+                <input type = "textarea" name = "ticket_sp_instruction" class="review-input"><br>
 
              <input type = "submit" value = "Create Ticket" id="userButton">
          </form>

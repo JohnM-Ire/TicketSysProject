@@ -58,7 +58,7 @@ class TestTicket(db.Model):
     contact_num = db.Column(db.String(20))
     priority = db.Column(db.Integer)
     summary = db.Column(db.String(80))
-    environment = db.Column(db.String(50)) #dropdown to have the env's DEV, QA, REL, PROD, OTHER
+    environment = db.Column(db.String(50))
     ticket_sp_instruction = db.Column(db.String(200))
 
     def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):

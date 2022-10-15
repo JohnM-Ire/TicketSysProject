@@ -101,13 +101,15 @@ def Teaminfo(chosen_id):
 
 @app.route('/newticket', methods=['GET', 'POST'])
 def addNewTicket():
+    teamList = Team.query.all()
+    #teamList = Team.query.with_entities(Team.team_id, Team.team_name).all()
     if request.method == 'GET':
-        return render_template('newTicket.html')
+        return render_template('newTicket.html', teamList=teamList)
 
     if request.method == 'POST':
         user_id = request.form['user_id']
         description = request.form['description']
-        state = request.form['state']
+        state = "Open"
         team_id = request.form['team_id']
         contact_num = request.form['contact_num']
         priority = request.form['priority']
@@ -117,6 +119,7 @@ def addNewTicket():
 
         if user_id == "" or description == "" or team_id == "":
             return 'Please go back and enter values for fields'
+
         else:
             newTickets = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
                            priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
