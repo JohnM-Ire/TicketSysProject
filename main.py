@@ -146,17 +146,37 @@ def allOpenTickets():
     return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets)
 
 
-@app.route('/ticket/<int:chosen_ticket_id>')
+@app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
 def viewTicket(chosen_ticket_id):
     ticketinfo = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
                   TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
                                                   TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,
                   TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
-
-    if ticketinfo:
-        return render_template('ticket.html', ticketinfo=ticketinfo)
+    teamList = Team.query.all()
+    if request.method == 'GET':
+        if ticketinfo:
+            return render_template('ticket.html', ticketinfo=ticketinfo, teamList=teamList)
     return f"No Ticket with id {chosen_ticket_id} in system"
 
+    if request.method == 'POST':
+        description = request.form['description']
+        state = request.form['state']
+        team_id = request.form['team_id']
+        priority = request.form['priority']
+        summary = request.form['summary']
+        environment = request.form['environment']
+        ticket_sp_instruction = request.form['ticket_sp_instruction']
+
+        if user_id == "" or description == "" or team_id == "":
+            return 'Please go back and enter values for fields'
+
+        else:
+            updateTicket = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
+                           priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
+
+            db.session.add(updateTicket)
+            db.session.commit()
+            return redirect('/opentickets')
 
 
 if __name__ == '__main__':

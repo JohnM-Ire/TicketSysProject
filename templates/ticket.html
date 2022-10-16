@@ -6,19 +6,37 @@
 </head>
 <body>
  {% for ticket in ticketinfo %}
-
+<!-- <form id="editTicket-form" action='' method = "POST">-->
         <p class="info">ticket_id :<b> {{ ticket.ticket_id }} </b></p>
         <p class="info">ticket_created:<b> {{ ticket.ticket_created }} </b></p>
         <p class="info">state :<b> {{ ticket.state }} </b></p>
+<!--         <p>State:  <select name="state"  class="select-boxes" placeholder=" {{ ticket.state }} ">-->
+<!--                   <option value="Open">Open</option>-->
+<!--                   <option value="In Progress">In Progress</option>-->
+<!--                   <option value="Fulfilled">Fulfilled</option>-->
+<!--                   <option value="Closed Incomplete">Closed Incomplete</option>-->
+<!--        </select>-->
+         </p>
  <br>
-        <p class="info">Requested by :<b> {{ ticket.name }}, ID: {{ ticket.user_id }}  </b></p>
+        <p class="info">Requested by :<b> {{ ticket.name }} </b></p>
         <p class="info">Email :<b> {{ ticket.email }} </b></p>
         <p class="info">contact_num :<b> {{ ticket.contact_num }} </b></p>
  <br>
         <p class="info">priority :<b> {{ ticket.priority }} </b></p>
+<!--         <select name="priority"  class="select-boxes" placeholder=" {{ ticket.priority }} ">-->
+<!--                   <option value="1">1 - Low</option>-->
+<!--                   <option value="2">2 - Moderate</option>-->
+<!--                   <option value="3">3 - High</option>-->
+<!--                   <option value="4">4 - Critical</option>-->
+<!--        </select>-->
         <p class="info">environment :<b> {{ ticket.environment }} </b></p>
  <br>
- <p class="info">Assigned to : :<b>{{ ticket.team_name }}</b> Team ID: <b>{{ ticket.team_id }} </b></p>
+        <p class="info">Assigned to : :<b>{{ ticket.team_name }}</b> Team ID: <b>{{ ticket.team_id }} </b></p>
+<!--                <select name="team_id" class="select-boxes" placeholder=" {{ ticket.team_name }} ">-->
+<!--                      {% for t in teamList %}-->
+<!--                      <option value={{ t.team_id }}>{{ t.team_name }}</option>-->
+<!--                      {% endfor %}-->
+<!--                </select>-->
  <br>
         <p class="info">summary :<b> {{ ticket.summary }} </b></p>
         <p class="info">description :<b> {{ ticket.description }} </b></p>
@@ -27,6 +45,8 @@
 
             <hr>
             <br>
+<!--        <input type = "Submit" value = "Update Ticket" id="userButton">-->
+<!--        </form>-->
     {% endfor %}
 
 

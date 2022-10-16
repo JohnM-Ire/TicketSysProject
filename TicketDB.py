@@ -43,7 +43,7 @@ class User(db.Model):
     def __repr__(self):
         return f"{self.username}:{self.username}"
 
-
+# Consider a Ticket update field, where when we update the ticket state, the current DAteTime() is entered/Updated
 class TestTicket(db.Model):
     __tablename__ = "tickettable"
 
