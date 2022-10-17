@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, session
 from sqlalchemy.sql import select, alias
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, TestTicket
+from TicketDB import db, User, Team, TestTicket, Comment
 # from urllib.request import urlopen
 # from bs4 import BeautifulSoup
 import itertools
