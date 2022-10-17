@@ -43,6 +43,7 @@ class User(db.Model):
     def __repr__(self):
         return f"{self.username}:{self.username}"
 
+
 # Consider a Ticket update field, where when we update the ticket state, the current DAteTime() is entered/Updated
 class TestTicket(db.Model):
     __tablename__ = "tickettable"
@@ -74,3 +75,26 @@ class TestTicket(db.Model):
 
     def __repr__(self):
         return f"{self.ticket_id}:{self.ticket_id}"
+
+#
+# class Comment(db.Model):
+#     __tablename__ = "commenttable"
+#
+#     comm_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+#     ticket_id = db.Column(db.Integer, db.ForeignKey(TestTicket.ticket_id))
+#     ticket_comment = db.relationship("Ticket", backref='Comment')
+#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+#     comm_user = db.relationship("User", backref='Comment')
+#     comment_created = db.Column(db.String(50), default=func.now())
+#     comment = db.Column(db.String(300))
+#
+#     def __init__(self, ticket_id, user_id, comment_created, comment):
+#         self.ticket_id = ticket_id
+#         self.ticket_comment = ticket_comment
+#         self.user_id = user_id
+#         self.comm_user = comm_user
+#         self.comment_created = comment_created
+#         self.comment = comment
+#
+#     def __repr__(self):
+#         return f"{self.comm_id}:{self.comment_created}"

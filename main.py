@@ -152,31 +152,35 @@ def viewTicket(chosen_ticket_id):
                   TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
                                                   TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,
                   TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
+    updatedescription = TestTicket.query.with_entities(TestTicket.description).filter(TestTicket.ticket_id == chosen_ticket_id).first()
     teamList = Team.query.all()
+
     if request.method == 'GET':
         if ticketinfo:
             return render_template('ticket.html', ticketinfo=ticketinfo, teamList=teamList)
-    return f"No Ticket with id {chosen_ticket_id} in system"
+    # return f"No Ticket with id {chosen_ticket_id} in system"
 
     if request.method == 'POST':
-        description = request.form['description']
+        # user_id = request.form['user_id']
+        # description = request.form['description']
         state = request.form['state']
-        team_id = request.form['team_id']
-        priority = request.form['priority']
-        summary = request.form['summary']
-        environment = request.form['environment']
-        ticket_sp_instruction = request.form['ticket_sp_instruction']
+        # team_id = request.form['team_id']
+        # contact_num = request.form['contact_num']
+        #priority = request.form['priority']
+        # summary = request.form['summary']
+        # environment = request.form['environment']
+        # ticket_sp_instruction = request.form['ticket_sp_instruction']
 
-        if user_id == "" or description == "" or team_id == "":
-            return 'Please go back and enter values for fields'
+        # if user_id == "" or description == "" or team_id == "":
+        #     return 'Please go back and enter values for fields'
 
-        else:
-            updateTicket = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
-                           priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
+        # else:
+        #     updateTicket = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
+        #                    priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
-            db.session.add(updateTicket)
-            db.session.commit()
-            return redirect('/opentickets')
+        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.state: state})
+        db.session.commit()
+        return redirect('/opentickets')
 
 
 if __name__ == '__main__':
