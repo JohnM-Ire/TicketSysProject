@@ -85,13 +85,15 @@ class Comment(db.Model):
     ticket_comment = db.relationship("TestTicket", backref='Comment')
     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
     comm_user = db.relationship("User", backref='Comment')
-    comment_created = db.Column(db.String(50), default=func.now())
+    date_created = db.Column(db.String(50), default=func.now())
+    date_modified = db.Column(db.String(50), default=func.now())
     comment = db.Column(db.String(300))
 
-    def __init__(self, ticket_id, user_id, comment_created, comment):
+    def __init__(self, ticket_id, user_id, comment_created, date_modified, comment):
         self.ticket_id = ticket_id
         self.user_id = user_id
         self.comment_created = comment_created
+        self.date_modified = date_modified
         self.comment = comment
 
     def __repr__(self):

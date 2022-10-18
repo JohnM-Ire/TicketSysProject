@@ -164,7 +164,7 @@ def viewTicket(chosen_ticket_id):
         # user_id = request.form['user_id']
         # description = request.form['description']
         state = request.form['state']
-        # team_id = request.form['team_id']
+        team_id = request.form['team_id']
         # contact_num = request.form['contact_num']
         #priority = request.form['priority']
         # summary = request.form['summary']
@@ -179,6 +179,7 @@ def viewTicket(chosen_ticket_id):
         #                    priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
         db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.state: state})
+        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.team_id: team_id})
         db.session.commit()
         return redirect('/opentickets')
 

@@ -16,7 +16,7 @@
              <textarea readonly name = "description" rows="15" cols="50">{{ticket.description}}</textarea>
  <form id="update-form" action='' method = "POST">
                 <p>State: <select name="state"  class="select-boxes">
-                    <option value="{{ ticket.state }}" selected disabled hidden>{{ ticket.state }} </option>
+                    <option value="{{ ticket.state }}">{{ ticket.state }} </option>
                             <option value="Open">Open</option>
                             <option value="In Progress">In Progress</option>
                             <option value="Fulfilled">Fulfilled</option>
@@ -26,8 +26,10 @@
                <label for="team_id"></label>
                 <p>Assign job to Team:
                 <select name="team_id" class="select-boxes" >
-                      {% for t in teamList %}
-                      <option placeholder={{ticket.team_name}} value="{{ t.team_id }}">{{ t.team_name }}</option>
+
+                      <option placeholder={{ticket.team_name}} value="{{ ticket.team_id }}">{{ ticket.team_name }}</option>
+                     {% for t in teamList %}
+                      <option placeholder={{t.team_name}} value="{{ t.team_id }}">{{ t.team_name }}</option>
                       {% endfor %}
                 </select></p>
 

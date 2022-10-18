@@ -19,8 +19,6 @@
         <p class="info">Ticket Created :<b><br> {{ openticket.ticket_created }} </b></p>
         <p class="info">Requested by :<b><br> {{ openticket.name }} </b></p>
         <p class="info">Assigned to Team:<b><br> {{ openticket.team_name }} </b></p>
-
-    <br>
         <p class="info">Summary :<b><br> {{ openticket.summary }} </b></p></a>
 
     <br>
@@ -36,16 +34,11 @@
         <a href="/ticket/{{ progTicket.ticket_id }}">
         <p class="info">Ticket Number :<b> <br>{{ progTicket.ticket_id }} </b></p>
         <p class="info">Priority  :<b><br> {{ progTicket.priority }} </b></p>
-
-
         <p class="info">Ticket State :<b><br> {{ progTicket.state }} </b></p>
         <p class="info">Ticket Created :<b><br> {{ progTicket.ticket_created }} </b></p>
         <p class="info">Requested by :<b><br> {{ progTicket.name }} </b></p>
         <p class="info">Assigned to Team:<b><br> {{ progTicket.team_name }} </b></p>
-
-    <br>
         <p class="info">Summary :<b><br> {{ progTicket.summary }} </b></p></a>
-
 
  <p>*********************************************************************</p>
     {% endfor %}
