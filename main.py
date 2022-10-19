@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, session
 from sqlalchemy.sql import select, alias
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, TestTicket, Comment
+from TicketDB import db, User, Team, TestTicket, TComment
 # from urllib.request import urlopen
 # from bs4 import BeautifulSoup
 import itertools
@@ -18,6 +18,7 @@ db.init_app(app)
 @app.before_first_request
 def create_table():
     db.create_all()
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -149,37 +150,79 @@ def allOpenTickets():
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
 def viewTicket(chosen_ticket_id):
     ticketinfo = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
-                  TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
-                                                  TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,
-                  TestTicket.team_id == Team.team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
-    updatedescription = TestTicket.query.with_entities(TestTicket.description).filter(TestTicket.ticket_id == chosen_ticket_id).first()
+                    TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
+                    TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,TestTicket.team_id == Team.
+                    team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
+
     teamList = Team.query.all()
+    allComments = TComment.query.with_entities(TComment.comm_id, TComment.ticket_id, TComment.comment, TComment.user_id, TComment
+                                               .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id).all()
+
 
     if request.method == 'GET':
         if ticketinfo:
-            return render_template('ticket.html', ticketinfo=ticketinfo, teamList=teamList)
+            return render_template('ticket.html', ticketinfo=ticketinfo, teamList=teamList, allComments=allComments)
+    # return f"No Ticket with id {chosen_ticket_id} in system"
+
+    if request.method == 'POST':
+        comment = request.form['comment']
+        user_id = request.form['user_id']
+        ticket_id = chosen_ticket_id
+
+
+
+        if comment == "":
+            return 'Please go back and enter values for fields'
+
+        else:
+            newComment = TComment(comment=comment, user_id=user_id, ticket_id=ticket_id)
+
+        db.session.add(newComment)
+        db.session.commit()
+        return redirect('/opentickets')
+
+
+@app.route('/editticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
+def editTicket(chosen_ticket_id):
+    ticketinfo = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
+                    TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
+                    TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,TestTicket.team_id == Team.
+                    team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
+
+    teamList = Team.query.all()
+
+
+    if request.method == 'GET':
+        if ticketinfo:
+            return render_template('editTicket.html', ticketinfo=ticketinfo, teamList=teamList)
     # return f"No Ticket with id {chosen_ticket_id} in system"
 
     if request.method == 'POST':
         # user_id = request.form['user_id']
-        # description = request.form['description']
+        #description = request.form['description']
         state = request.form['state']
         team_id = request.form['team_id']
-        # contact_num = request.form['contact_num']
-        #priority = request.form['priority']
-        # summary = request.form['summary']
-        # environment = request.form['environment']
+        #contact_num = request.form['contact_num']
+        priority = request.form['priority']
+        #summary = request.form['summary']
+        environment = request.form['environment']
         # ticket_sp_instruction = request.form['ticket_sp_instruction']
 
+
         # if user_id == "" or description == "" or team_id == "":
-        #     return 'Please go back and enter values for fields'
+            #return 'Please go back and enter values for fields'
 
         # else:
         #     updateTicket = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
         #                    priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
+
+
+
         db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.state: state})
         db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.team_id: team_id})
+        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.priority: priority})
+        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.environment: environment})
         db.session.commit()
         return redirect('/opentickets')
 

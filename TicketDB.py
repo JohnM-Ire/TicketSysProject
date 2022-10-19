@@ -62,6 +62,7 @@ class TestTicket(db.Model):
     environment = db.Column(db.String(50))
     ticket_sp_instruction = db.Column(db.String(200))
 
+
     def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):
         self.user_id = user_id
         self.description = description
@@ -73,28 +74,25 @@ class TestTicket(db.Model):
         self.environment = environment
         self.ticket_sp_instruction = ticket_sp_instruction
 
+
     def __repr__(self):
         return f"{self.ticket_id}:{self.ticket_id}"
 
 
-class Comment(db.Model):
-    __tablename__ = "commenttable"
-
+class TComment(db.Model):
+    __tablename__ = "ticketcommenttable"
     comm_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    ticket_id = db.Column(db.Integer, db.ForeignKey(TestTicket.ticket_id))
-    ticket_comment = db.relationship("TestTicket", backref='Comment')
+    comment = db.Column(db.String(240))
     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-    comm_user = db.relationship("User", backref='Comment')
-    date_created = db.Column(db.String(50), default=func.now())
-    date_modified = db.Column(db.String(50), default=func.now())
-    comment = db.Column(db.String(300))
+    commuserrel = db.relationship("User", backref='TComment')
+    timecreated = db.Column(db.String(50), default=func.now(), index=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey(TestTicket.ticket_id))
+    commentticketrel = db.relationship("TestTicket", backref='TComment')
 
-    def __init__(self, ticket_id, user_id, comment_created, date_modified, comment):
-        self.ticket_id = ticket_id
-        self.user_id = user_id
-        self.comment_created = comment_created
-        self.date_modified = date_modified
+    def __init__(self, comment, user_id, ticket_id):
         self.comment = comment
+        self.user_id = user_id
+        self.ticket_id = ticket_id
 
     def __repr__(self):
         return f"{self.comm_id}:{self.comm_id}"
