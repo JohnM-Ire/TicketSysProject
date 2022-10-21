@@ -8,7 +8,7 @@
 {% for ticket in ticketinfo %}
 <a href="/editticket/{{ ticket.ticket_id }}"><button>Update Ticket</button></a>
 
-                <p>Requester's ID: {{ ticket.user_id }}<p>
+                <p>Requester's ID: {{ ticket.user_id }} {{ ticket.name }}<p>
               <p>Contact Number : {{ ticket.contact_num }}</p>
 
                 <p>Ticket Description: </p>

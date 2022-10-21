@@ -13,6 +13,12 @@
 <p><a href="/opentickets">Open Tickets</a></p>
 <p><a href="/newticket">Create Ticket</a></p>
 
+{% for user in logged_in_user %}
+
+<p> Login ID:{{ user.login_id }}  </p> <br><p> {{ user.user_id }} </p> <br><p> {{ user.name }} </p> <br><p>{{ user.email }} </p> <br><p> {{ user.password }}
+   </p> <br><p> {{ user.team_id }} </p> <br><p> {{ user.team_name }} </p> <br><p> {{ user.jobTitle }}</p> <br>
+
+     {% endfor %}
 
 
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, session
-from sqlalchemy.sql import select, alias
+from sqlalchemy.sql import select, alias, desc
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, TestTicket, TComment
+from TicketDB import db, User, Team, TestTicket, TComment, LoginUser
 # from urllib.request import urlopen
 # from bs4 import BeautifulSoup
 import itertools
@@ -21,9 +21,36 @@ def create_table():
 
 
 
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+
+    logged_in_user = User.query.with_entities(LoginUser.login_id, User.user_id, User.name, User.email, User.password,
+                                            Team.team_id, Team.team_name, User.jobTitle).join(LoginUser, User.email == LoginUser.
+                                            email).join(Team, User.team_id == Team.team_id).filter(LoginUser.email == User.email).all()
+
+    return render_template('home.html', logged_in_user=logged_in_user)
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        loginemail = request.form['email']
+        loginpassword = request.form['password']
+
+
+        if db.session.query(User.user_id).filter_by(email=loginemail).first() is not None:
+            session['logged_in'] = True
+            newLogin = LoginUser(email=loginemail, password=loginpassword)
+            db.session.add(newLogin)
+            db.session.commit()
+            return redirect('/')
+
+        else:
+            return 'Incorrect Login Details, Please Go Back'
+
+
 
 
 @app.route('/adduser', methods=['GET', 'POST'])
@@ -156,7 +183,8 @@ def viewTicket(chosen_ticket_id):
 
     teamList = Team.query.all()
     allComments = TComment.query.with_entities(TComment.comm_id, TComment.ticket_id, TComment.comment, TComment.user_id, TComment
-                                               .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id).all()
+                                               .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id)\
+        .order_by(desc(TComment.timecreated)).all()
 
 
     if request.method == 'GET':
