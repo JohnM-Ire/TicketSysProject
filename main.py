@@ -18,7 +18,8 @@ db.init_app(app)
 @app.before_first_request
 def create_table():
     db.create_all()
-
+    # db.session.query(LoginUser).delete()
+    # db.session.commit()
 
 
 
@@ -55,8 +56,9 @@ def login():
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def addUser():
+    teams = Team.query.all()
     if request.method == 'GET':
-        return render_template('addUser.html')
+        return render_template('addUser.html', teams=teams)
 
     if request.method == 'POST':
         username = request.form['username']
@@ -130,7 +132,7 @@ def Teaminfo(chosen_id):
 @app.route('/newticket', methods=['GET', 'POST'])
 def addNewTicket():
     teamList = Team.query.all()
-    #teamList = Team.query.with_entities(Team.team_id, Team.team_name).all()
+
     if request.method == 'GET':
         return render_template('newTicket.html', teamList=teamList)
 

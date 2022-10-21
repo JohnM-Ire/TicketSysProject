@@ -34,7 +34,13 @@
                 <input type = "text" name = "tasksComplete" class="review-input"><br>
                 <p>Team ID you are a member of </p>
                 <label for="team_id"></label>
-                <input type = "text" name = "team_id" class="review-input"><br>
+                <p>Choose the Team you are a member of: </p>
+                <select name="team_id" class="select-boxes">
+                      {% for t in teams %}
+                      <option value={{ t.team_id }}>{{ t.team_name }}</option>
+                      {% endfor %}
+                </select>
+
 
              <input type = "submit" value = "Create User" id="userButton">
          </form>
