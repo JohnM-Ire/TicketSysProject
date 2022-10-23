@@ -34,12 +34,7 @@
              <textarea readonly name = "ticket_sp_instruction" rows="10" cols="50" >{{ ticket.ticket_sp_instruction }}</textarea><br>
 
      <form id="comment-form" action='' method = "POST">
-            <p>Enter you user ID</p>
-            <label for="user_id"></label>
-            <input type = "text" name = "user_id">
-<!--            <p>Enter you ticket_id</p>-->
-<!--            <label for="ticket_id"></label>-->
-<!--            <input type = "text" name = "ticket_id">-->
+
             <p>Enter Comments: </p>
             <label for="comment"></label>
             <textarea name = "comment" rows="15" cols="50"></textarea>
@@ -48,11 +43,8 @@
      </form>
 
      {% for comment in allComments %}
-        <p>Ticket Id : {{ comment.ticket_id }}</p>
-        <p>Comment Id : {{ comment.comm_id }}</p>
-        <p>Author : {{ comment.user_id }} : {{ comment.name }}</p>
-        <p>Comment Created : {{ comment.timecreated }}</p>
-        <p>Comment Id : {{ comment.comm_id }}</p>
+        <p>{{ comment.name }} : {{ comment.timecreated }}</p>
+
         <textarea name ="comment" rows="20" cols="50">{{ comment.comment }}</textarea>
      {% endfor %}
 

@@ -12,11 +12,13 @@
 <p><a href="/admin_data">View Admin data</a></p>
 <p><a href="/opentickets">Open Tickets</a></p>
 <p><a href="/newticket">Create Ticket</a></p>
-
+<br>
+<p>Current User ID Logged in : {{ user }}</p>
+<br>
 {% for user in logged_in_user %}
-
-<p> Login ID:{{ user.login_id }}  </p> <br><p> {{ user.user_id }} </p> <br><p> {{ user.name }} </p> <br><p>{{ user.email }} </p> <br><p> {{ user.password }}
-   </p> <br><p> {{ user.team_id }} </p> <br><p> {{ user.team_name }} </p> <br><p> {{ user.jobTitle }}</p> <br>
+<p>{{ user.name }}'s info: </p>
+<p> User Id {{ user.user_id }} </p> <p> Logged In user : {{ user.name }} </p> <p>Email : {{ user.email }} </p> <p> Password :  {{ user.password }}
+   </p> <p>Users Team : {{ user.team_id }}, {{ user.team_name }} </p> <p>Users Job title: {{ user.jobTitle }}</p>
 
      {% endfor %}
 

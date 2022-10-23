@@ -63,6 +63,7 @@ class TestTicket(db.Model):
     ticket_sp_instruction = db.Column(db.String(200))
 
 
+
     def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):
         self.user_id = user_id
         self.description = description
