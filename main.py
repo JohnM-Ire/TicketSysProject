@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, session, sessions
-from sqlalchemy.sql import select, alias, desc
+from sqlalchemy.sql import select, alias, desc, or_, and_
 
 # from flask_sqlalchemy import SQLAlchemy
 from TicketDB import db, User, Team, TestTicket, TComment, LoginUser
@@ -61,8 +61,10 @@ def login():
         else:
             return 'Incorrect Login Details, Please Go Back'
 
-
-
+@app.route('/logout')
+def logout():
+    session.pop("user", None)
+    return redirect('/login')
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def addUser():
@@ -117,8 +119,7 @@ def retrieveUsers():
 @app.route('/team/javadev')
 def retrieveJava():
     javadevs = Team.query.with_entities(Team.team_id, Team.team_name, Team.team_category, User.user_id, User.name, User.
-                                        email, User.jobTitle).join(User, Team.team_id == User.team_id).filter(Team.team_id ==
-                                                                                                              '2').all()
+                email, User.jobTitle).join(User, Team.team_id == User.team_id).filter(Team.team_id == '2').all()
 
     return render_template('javateam.html', javadevs=javadevs)
 
@@ -131,7 +132,8 @@ def AllTeams():
 @app.route('/teams/<int:chosen_id>')
 def Teaminfo(chosen_id):
     teaminfo = Team.query.filter_by(team_id=chosen_id).first()
-    allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id == chosen_id).all()
+    allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id ==
+                    chosen_id).all()
     if teaminfo:
         return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
     return f"No Team with id {chosen_id} in system"
@@ -142,8 +144,8 @@ def Teaminfo(chosen_id):
 def addNewTicket():
     user = session['user']
     logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
-                                            Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id ==
-                                            Team.team_id).filter(User.user_id == user).all()
+                        Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id == Team.team_id)\
+                        .filter(User.user_id == user).all()
     teamList = Team.query.all()
 
     if request.method == 'GET':
@@ -175,20 +177,25 @@ def addNewTicket():
 @app.route('/opentickets')
 def allOpenTickets():
     tickets = TestTicket.query.all()
+    user = session["user"]
+
+    loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
+    loggedteam = str(loggedteam)
+    loggedteam = loggedteam.strip("[ ] , ( )")
 
     openTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.
                     ticket_created, TestTicket.description, TestTicket.state, TestTicket.team_id, Team.team_name, User.
-                    email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket.
-                    ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket.
-                    user_id == User.user_id).filter(TestTicket.state == 'Open', User.user_id == session['user']).all()
+                    email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket.ticket_sp_instruction)\
+                    .join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket.
+                    user_id == User.user_id).filter(and_(TestTicket.state == 'Open', TestTicket.team_id == loggedteam)).all()
 
     progTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket
                     .ticket_created, TestTicket.description, TestTicket.state, TestTicket.team_id, Team.team_name, User
                     .email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket
                     .ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket
-                    .user_id == User.user_id).filter(TestTicket.state == 'In Progress', User.user_id == session['user']).all()
+                    .user_id == User.user_id).filter(and_(TestTicket.state == 'In Progress'), (TestTicket.team_id == loggedteam)).all()
 
-    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets)
+    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, loggedteam=loggedteam)
 
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
