@@ -61,6 +61,8 @@ class TestTicket(db.Model):
     summary = db.Column(db.String(80))
     environment = db.Column(db.String(50))
     ticket_sp_instruction = db.Column(db.String(200))
+    # assigned_to = db.Column(db.Integer, db.ForeignKey(User.user_id))
+    # assignticket_user = db.relationship("User", backref='TestTicket')
 
 
 

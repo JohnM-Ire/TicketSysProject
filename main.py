@@ -88,7 +88,7 @@ def addUser():
 
             db.session.add(newuser)
             db.session.commit()
-            return redirect('/admin_data')
+            return redirect('/login')
 
 
 @app.route('/addTeam', methods=['GET', 'POST'])
@@ -142,6 +142,8 @@ def Teaminfo(chosen_id):
 
 @app.route('/newticket', methods=['GET', 'POST'])
 def addNewTicket():
+    # allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id ==
+    #                     chosen_id).all()
     user = session['user']
     logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
                         Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id == Team.team_id)\
@@ -161,6 +163,7 @@ def addNewTicket():
         summary = request.form['summary']
         environment = request.form['environment']
         ticket_sp_instruction = request.form['ticket_sp_instruction']
+        # assigned_to = request.form['assigned_to']
 
         if user_id == "" or description == "" or team_id == "":
             return 'Please go back and enter values for fields'
@@ -195,7 +198,13 @@ def allOpenTickets():
                     .ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket
                     .user_id == User.user_id).filter(and_(TestTicket.state == 'In Progress'), (TestTicket.team_id == loggedteam)).all()
 
-    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, loggedteam=loggedteam)
+    myTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket
+                    .ticket_created, TestTicket.description, TestTicket.state, TestTicket.team_id, Team.team_name, User
+                    .email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket
+                    .ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket
+                    .user_id == User.user_id).filter(TestTicket.user_id == user).all()
+
+    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, loggedteam=loggedteam, myTickets=myTickets)
 
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
