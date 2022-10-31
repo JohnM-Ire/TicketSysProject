@@ -100,20 +100,20 @@ class TComment(db.Model):
     def __repr__(self):
         return f"{self.comm_id}:{self.comm_id}"
 
-
-class LoginUser(db.Model):
-    __tablename__ = "loggedintable"
-    login_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-    login_user = db.relationship("User", backref='LoginUser')
-    email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(12))
-    loginTime = db.Column(db.DATETIME, default=func.now())
-
-    def __init__(self, email, password):
-
-        self.email = email
-        self.password = password
-
-    def __repr__(self):
-        return f"{self.login_id}:{self.login_id}"
+#
+# class LoginUser(db.Model):
+#     __tablename__ = "loggedintable"
+#     login_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+#     login_user = db.relationship("User", backref='LoginUser')
+#     email = db.Column(db.String(50), unique=True)
+#     password = db.Column(db.String(12))
+#     loginTime = db.Column(db.DATETIME, default=func.now())
+#
+#     def __init__(self, email, password):
+#
+#         self.email = email
+#         self.password = password
+#
+#     def __repr__(self):
+#         return f"{self.login_id}:{self.login_id}"

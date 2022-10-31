@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, session, ses
 from sqlalchemy.sql import select, alias, desc, or_, and_
 
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, TestTicket, TComment, LoginUser
+from TicketDB import db, User, Team, TestTicket, TComment
 # from urllib.request import urlopen
 # from bs4 import BeautifulSoup
 import itertools
@@ -33,14 +33,14 @@ def home():
     else:
         user = session["user"]
 
-        logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
-                                                Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id ==
-                                                Team.team_id).filter(User.user_id == user).all()
+        # logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
+        #                                         Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id ==
+        #                                         Team.team_id).filter(User.user_id == user).all()
+        # return render_template('home.html', user=user, logged_in_user=logged_in_user)
+        return render_template('home.html', user=user)
 
-        return render_template('home.html', user=user, logged_in_user=logged_in_user)
 
-
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
@@ -53,9 +53,7 @@ def login():
             user = str(user)
             user = user.strip(", ( )")
             session['user'] = user
-            # newLogin = LoginUser(email=loginemail, password=loginpassword)
-            # db.session.add(newLogin)
-            # db.session.commit()
+
             return redirect('/')
 
         else:
@@ -69,6 +67,7 @@ def logout():
 @app.route('/adduser', methods=['GET', 'POST'])
 def addUser():
     teams = Team.query.all()
+
     if request.method == 'GET':
         return render_template('addUser.html', teams=teams)
 
@@ -89,7 +88,7 @@ def addUser():
             db.session.add(newuser)
             db.session.commit()
             return redirect('/login')
-
+0
 
 @app.route('/addTeam', methods=['GET', 'POST'])
 def addTeam():
@@ -145,9 +144,9 @@ def addNewTicket():
     # allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id ==
     #                     chosen_id).all()
     user = session['user']
-    logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
-                        Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id == Team.team_id)\
-                        .filter(User.user_id == user).all()
+    # logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
+    #                     Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id == Team.team_id)\
+    #                     .filter(User.user_id == user).all()
     teamList = Team.query.all()
 
     if request.method == 'GET':
@@ -204,7 +203,7 @@ def allOpenTickets():
                     .ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket
                     .user_id == User.user_id).filter(TestTicket.user_id == user).all()
 
-    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, loggedteam=loggedteam, myTickets=myTickets)
+    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, myTickets=myTickets)
 
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
@@ -276,9 +275,6 @@ def editTicket(chosen_ticket_id):
         # else:
         #     updateTicket = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
         #                    priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
-
-
-
 
         db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.state: state})
         db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.team_id: team_id})
