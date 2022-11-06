@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, session, ses
 from sqlalchemy.sql import select, alias, desc, or_, and_
 
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, TestTicket, TComment
+from TicketDB import db, User, Team, Ticket, TComment
 # from urllib.request import urlopen
 # from bs4 import BeautifulSoup
 import itertools
@@ -168,7 +168,7 @@ def addNewTicket():
             return 'Please go back and enter values for fields'
 
         else:
-            newTickets = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
+            newTickets = Ticket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
                            priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
             db.session.add(newTickets)
@@ -178,40 +178,40 @@ def addNewTicket():
 
 @app.route('/opentickets')
 def allOpenTickets():
-    tickets = TestTicket.query.all()
+    tickets = Ticket.query.all()
     user = session["user"]
 
     loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
     loggedteam = str(loggedteam)
     loggedteam = loggedteam.strip("[ ] , ( )")
 
-    openTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.
-                    ticket_created, TestTicket.description, TestTicket.state, TestTicket.team_id, Team.team_name, User.
-                    email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket.ticket_sp_instruction)\
-                    .join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket.
-                    user_id == User.user_id).filter(and_(TestTicket.state == 'Open', TestTicket.team_id == loggedteam)).all()
+    openTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.
+                    ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.
+                    email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket.ticket_sp_instruction)\
+                    .join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
+                    user_id == User.user_id).filter(and_(Ticket.state == 'Open', Ticket.team_id == loggedteam)).all()
 
-    progTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket
-                    .ticket_created, TestTicket.description, TestTicket.state, TestTicket.team_id, Team.team_name, User
-                    .email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket
-                    .ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket
-                    .user_id == User.user_id).filter(and_(TestTicket.state == 'In Progress'), (TestTicket.team_id == loggedteam)).all()
+    progTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket
+                    .ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User
+                    .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
+                    .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket
+                    .user_id == User.user_id).filter(and_(Ticket.state == 'In Progress'), (Ticket.team_id == loggedteam)).all()
 
-    myTickets = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket
-                    .ticket_created, TestTicket.description, TestTicket.state, TestTicket.team_id, Team.team_name, User
-                    .email, TestTicket.priority, TestTicket.summary, TestTicket.environment, TestTicket
-                    .ticket_sp_instruction).join(Team, TestTicket.team_id == Team.team_id).join(User, TestTicket
-                    .user_id == User.user_id).filter(TestTicket.user_id == user).all()
+    myTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket
+                    .ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User
+                    .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
+                    .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket
+                    .user_id == User.user_id).filter(Ticket.user_id == user).all()
 
     return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, myTickets=myTickets)
 
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
 def viewTicket(chosen_ticket_id):
-    ticketinfo = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
-                    TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
-                    TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,TestTicket.team_id == Team.
-                    team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
+    ticketinfo = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.ticket_created, Ticket.description,
+                    Ticket.state, Ticket.team_id, Team.team_name, User.email, Ticket.contact_num, Ticket.priority, Ticket.summary,
+                    Ticket.environment, Ticket.ticket_sp_instruction).join(Team,Ticket.team_id == Team.
+                    team_id).join(User, Ticket.user_id == User.user_id).filter(Ticket.ticket_id == chosen_ticket_id).all()
 
     teamList = Team.query.all()
     allComments = TComment.query.with_entities(TComment.comm_id, TComment.ticket_id, TComment.comment, TComment.user_id, TComment
@@ -244,10 +244,10 @@ def viewTicket(chosen_ticket_id):
 
 @app.route('/editticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
 def editTicket(chosen_ticket_id):
-    ticketinfo = TestTicket.query.with_entities(TestTicket.ticket_id, TestTicket.user_id,  User.name, TestTicket.ticket_created, TestTicket.description,
-                    TestTicket.state, TestTicket.team_id, Team.team_name, User.email, TestTicket.contact_num, TestTicket.priority, TestTicket.summary,
-                    TestTicket.environment, TestTicket.ticket_sp_instruction).join(Team,TestTicket.team_id == Team.
-                    team_id).join(User, TestTicket.user_id == User.user_id).filter(TestTicket.ticket_id == chosen_ticket_id).all()
+    ticketinfo = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.ticket_created, Ticket.description,
+                    Ticket.state, Ticket.team_id, Team.team_name, User.email, Ticket.contact_num, Ticket.priority, Ticket.summary,
+                    Ticket.environment, Ticket.ticket_sp_instruction).join(Team,Ticket.team_id == Team.
+                    team_id).join(User, Ticket.user_id == User.user_id).filter(Ticket.ticket_id == chosen_ticket_id).all()
 
     teamList = Team.query.all()
 
@@ -273,13 +273,13 @@ def editTicket(chosen_ticket_id):
             #return 'Please go back and enter values for fields'
 
         # else:
-        #     updateTicket = TestTicket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
+        #     updateTicket = Ticket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
         #                    priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
-        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.state: state})
-        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.team_id: team_id})
-        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.priority: priority})
-        db.session.query(TestTicket).filter(TestTicket.ticket_id == chosen_ticket_id).update({TestTicket.environment: environment})
+        db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.state: state})
+        db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.team_id: team_id})
+        db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.priority: priority})
+        db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.environment: environment})
         db.session.commit()
         return redirect('/opentickets')
 

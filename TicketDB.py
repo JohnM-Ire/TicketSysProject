@@ -45,24 +45,24 @@ class User(db.Model):
 
 
 # Consider a Ticket update field, where when we update the ticket state, the current DAteTime() is entered/Updated
-class TestTicket(db.Model):
+class Ticket(db.Model):
     __tablename__ = "tickettable"
 
     ticket_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-    ticket_user = db.relationship("User", backref='TestTicket')
+    ticket_user = db.relationship("User", backref='Ticket')
     ticket_created = db.Column(db.String(50), default=func.now())
     description = db.Column(db.String(300))
     state = db.Column(db.String(30), default="Open")
     team_id = db.Column(db.Integer, db.ForeignKey(Team.team_id))
-    ticket_team = db.relationship("Team", backref='TestTicket')
+    ticket_team = db.relationship("Team", backref='Ticket')
     contact_num = db.Column(db.String(20))
     priority = db.Column(db.Integer)
     summary = db.Column(db.String(80))
     environment = db.Column(db.String(50))
     ticket_sp_instruction = db.Column(db.String(200))
     # assigned_to = db.Column(db.Integer, db.ForeignKey(User.user_id))
-    # assignticket_user = db.relationship("User", backref='TestTicket')
+    # assignticket_user = db.relationship("User", backref='Ticket')
 
 
 
@@ -89,8 +89,8 @@ class TComment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
     commuserrel = db.relationship("User", backref='TComment')
     timecreated = db.Column(db.String(50), default=func.now(), index=True)
-    ticket_id = db.Column(db.Integer, db.ForeignKey(TestTicket.ticket_id))
-    commentticketrel = db.relationship("TestTicket", backref='TComment')
+    ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
+    commentticketrel = db.relationship("Ticket", backref='TComment')
 
     def __init__(self, comment, user_id, ticket_id):
         self.comment = comment
