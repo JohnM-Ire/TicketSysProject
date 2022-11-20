@@ -8,6 +8,7 @@
  {% for ticket in ticketinfo %}
 
           <form id="update-form" action='' method = "POST">
+                           <input type = "submit" value = "Update Ticket" id="userButton">
                 <p>Requester's ID: {{ ticket.user_id }}<p>
               <p>Contact Number : {{ ticket.contact_num }}</p>
 
@@ -19,6 +20,7 @@
                     <option value="{{ ticket.state }}">{{ ticket.state }} </option>
                             <option value="Open">Open</option>
                             <option value="In Progress">In Progress</option>
+                            <option value="Waiting">Waiting</option>
                             <option value="Fulfilled">Fulfilled</option>
                             <option value="Closed Incomplete">Closed Incomplete</option>
                             </select>
@@ -62,7 +64,7 @@
                 <label for="ticket_sp_instruction"></label>
              <textarea readonly name = "ticket_sp_instruction" rows="10" cols="50" >{{ ticket.ticket_sp_instruction }}</textarea><br>
 
-             <input type = "submit" value = "Update Ticket" id="userButton">
+
          </form>
 
     {% endfor %}

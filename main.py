@@ -3,8 +3,7 @@ from sqlalchemy.sql import select, alias, desc, or_, and_
 
 # from flask_sqlalchemy import SQLAlchemy
 from TicketDB import db, User, Team, Ticket, TComment
-# from urllib.request import urlopen
-# from bs4 import BeautifulSoup
+
 import itertools
 import jinja2
 
@@ -21,8 +20,6 @@ db.init_app(app)
 @app.before_first_request
 def create_table():
     db.create_all()
-    # db.session.query(LoginUser).delete()
-    # db.session.commit()
 
 
 
@@ -33,10 +30,7 @@ def home():
     else:
         user = session["user"]
 
-        # logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
-        #                                         Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id ==
-        #                                         Team.team_id).filter(User.user_id == user).all()
-        # return render_template('home.html', user=user, logged_in_user=logged_in_user)
+
         return render_template('home.html', user=user)
 
 
@@ -59,10 +53,12 @@ def login():
         else:
             return 'Incorrect Login Details, Please Go Back'
 
+
 @app.route('/logout')
 def logout():
     session.pop("user", None)
     return redirect('/login')
+
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def addUser():
@@ -88,7 +84,18 @@ def addUser():
             db.session.add(newuser)
             db.session.commit()
             return redirect('/login')
-0
+
+@app.route('/deluser/<int:user_id>', methods=['GET', 'POST'])
+def DeleteSingleUser(user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    if request.method == 'POST':
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return redirect('/admin_data')
+
+    return render_template('deleteUser.html', user=user)
+
 
 @app.route('/addTeam', methods=['GET', 'POST'])
 def addTeam():
@@ -107,6 +114,17 @@ def addTeam():
             db.session.commit()
             return redirect('/admin_data')
 
+# NEED TO ACCOUNT FOR IF WE DELETE A TEAM WHAT HAPPENS TO THE USERS ASSIGNED TO THOSE TEAMS
+# @app.route('/delteam/<int:user_id>', methods=['GET', 'POST'])
+# def DeleteSingleTeam(team_id):
+#     team = Team.query.filter_by(user_id=user_id).first()
+#     if request.method == 'POST':
+#         if user:
+#             db.session.delete(user)
+#             db.session.commit()
+#             return redirect('/admin_data')
+#
+#     return render_template('deleteUser.html', user=user)
 
 @app.route('/admin_data')
 def retrieveUsers():
@@ -115,12 +133,14 @@ def retrieveUsers():
 
     return render_template('admin_data.html', users=users, teams=teams)
 
+
 @app.route('/team/javadev')
 def retrieveJava():
     javadevs = Team.query.with_entities(Team.team_id, Team.team_name, Team.team_category, User.user_id, User.name, User.
                 email, User.jobTitle).join(User, Team.team_id == User.team_id).filter(Team.team_id == '2').all()
 
     return render_template('javateam.html', javadevs=javadevs)
+
 
 @app.route('/teams')
 def AllTeams():
@@ -138,15 +158,11 @@ def Teaminfo(chosen_id):
     return f"No Team with id {chosen_id} in system"
 
 
-
 @app.route('/newticket', methods=['GET', 'POST'])
 def addNewTicket():
-    # allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id ==
-    #                     chosen_id).all()
+
     user = session['user']
-    # logged_in_user = User.query.with_entities(User.user_id, User.name, User.email, User.password,
-    #                     Team.team_id, Team.team_name, User.jobTitle).join(Team, User.team_id == Team.team_id)\
-    #                     .filter(User.user_id == user).all()
+
     teamList = Team.query.all()
 
     if request.method == 'GET':
@@ -196,6 +212,11 @@ def allOpenTickets():
                     .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
                     .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket
                     .user_id == User.user_id).filter(and_(Ticket.state == 'In Progress'), (Ticket.team_id == loggedteam)).all()
+    waitTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket
+                    .ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User
+                    .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
+                    .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket
+                    .user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'), (Ticket.team_id == loggedteam)).all()
 
     myTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket
                     .ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User
@@ -203,7 +224,7 @@ def allOpenTickets():
                     .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket
                     .user_id == User.user_id).filter(Ticket.user_id == user).all()
 
-    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, tickets=tickets, myTickets=myTickets)
+    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, waitTickets=waitTickets, myTickets=myTickets)
 
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
@@ -251,30 +272,16 @@ def editTicket(chosen_ticket_id):
 
     teamList = Team.query.all()
 
-
     if request.method == 'GET':
         if ticketinfo:
             return render_template('editTicket.html', ticketinfo=ticketinfo, teamList=teamList)
     # return f"No Ticket with id {chosen_ticket_id} in system"
 
     if request.method == 'POST':
-        # user_id = request.form['user_id']
-        #description = request.form['description']
         state = request.form['state']
         team_id = request.form['team_id']
-        #contact_num = request.form['contact_num']
         priority = request.form['priority']
-        #summary = request.form['summary']
         environment = request.form['environment']
-        # ticket_sp_instruction = request.form['ticket_sp_instruction']
-
-
-        # if user_id == "" or description == "" or team_id == "":
-            #return 'Please go back and enter values for fields'
-
-        # else:
-        #     updateTicket = Ticket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,
-        #                    priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.state: state})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.team_id: team_id})

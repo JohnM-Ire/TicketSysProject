@@ -30,6 +30,7 @@ class User(db.Model):
     tasksComplete = db.Column(db.Integer)
     team_id = db.Column(db.Integer, db.ForeignKey(Team.team_id))
     team_user = db.relationship("Team", backref='User')
+    # is_admin = db.Column(db.String(1))
 
     def __init__(self, username, name, email, jobTitle, password, tasksComplete, team_id):
         self.username = username
@@ -39,6 +40,7 @@ class User(db.Model):
         self.password = password
         self.tasksComplete = tasksComplete
         self.team_id = team_id
+
 
     def __repr__(self):
         return f"{self.username}:{self.username}"
@@ -63,8 +65,6 @@ class Ticket(db.Model):
     ticket_sp_instruction = db.Column(db.String(200))
     # assigned_to = db.Column(db.Integer, db.ForeignKey(User.user_id))
     # assignticket_user = db.relationship("User", backref='Ticket')
-
-
 
     def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):
         self.user_id = user_id
