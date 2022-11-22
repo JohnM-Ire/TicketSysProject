@@ -2,28 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Task Ticket Home</title>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
 </head>
 
 <body>
-<p><a href="/logout">Log out</a></p>
-<br>
-<p><a href="/adduser">Add User</a></p>
-<p><a href="/addTeam">Add Team</a></p>
-<p><a href="/teams">View Teams</a></p>
-<p><a href="/admin_data">View Admin data</a></p>
-<p><a href="/opentickets">Open Tickets</a></p>
-<p><a href="/newticket">Create Ticket</a></p>
-<br>
-<p>Current User ID Logged in : {{ user }}</p>
-<br>
-{% for user in logged_in_user %}
-<p>{{ user.name }}'s info: </p>
-<p> User Id {{ user.user_id }} </p> <p> Logged In user : {{ user.name }} </p> <p>Email : {{ user.email }} </p> <p> Password :  {{ user.password }}
-   </p> <p>Users Team : {{ user.team_id }}, {{ user.team_name }} </p> <p>Users Job title: {{ user.jobTitle }}</p>
+<!--<p><a href="/logout">Log out</a></p>-->
+<!--<br>-->
+<!--<p><a href="/adduser">Add User</a></p>-->
+<!--<p><a href="/addTeam">Add Team</a></p>-->
+<!--<p><a href="/teams">View Teams</a></p>-->
+<!--<p><a href="/admin_data">View Admin data</a></p>-->
+<!--<p><a href="/opentickets">Open Tickets</a></p>-->
+<!--<p><a href="/newticket">Create Ticket</a></p>-->
+<!--<br>-->
+<!--<p>Current User ID Logged in : {{ user }}</p>-->
+<!--<br>-->
 
-     {% endfor %}
+<div id="wrapper">
 
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
+
+	<div id="home-left-outer">
+		<h3 class="enquiry-h3">Tickets</h3>
+		<hr class="enquiry-hr">
+		<hr class="enquiry-hr">
+		<div id="home-left-inner">
+			<a href="/opentickets"><h3  class="enquiry-h3">Open Tickets</h3></a>
+			 {% for openticket in openTickets %}
+ <p>*********************************************************************</p>
+    	<a href="/ticket/{{ openticket.ticket_id }}">
+        <span class="info">Ticket Number :<b> {{ openticket.ticket_id }} </b></span>
+        <span class="info">Priority  :<b> {{ openticket.priority }} </b></span>
+        <span class="info">Ticket State :<b> {{ openticket.state }} </b></span>
+        <span class="info">Assigned to Team:<b> {{ openticket.team_name }} </b></span><br>
+        <span class="info">Summary :<b> {{ openticket.summary }} </b></span></a>
+    <br>
+ <p>*********************************************************************</p>
+    {% endfor %}
+			<p>Currently {{ openTicketsCount }} Open Tickets</p>
+		</div>
+				<div id="home-left-inner">
+				<a href="/opentickets#anchor_progress"><h3  class="enquiry-h3">In Progress Tickets</h3></a>
+				{% for progTicket in progTickets %}
+ <p>*********************************************************************</p>
+        <a href="/ticket/{{ progTicket.ticket_id }}">
+        <span class="info">Ticket Number :<b> {{ progTicket.ticket_id }} </b></span>
+        <span class="info">Priority  :<b> {{ progTicket.priority }} </b></span>
+        <span class="info">Ticket State :<b> {{ progTicket.state }} </b></span>
+        <span class="info">Assigned to Team:<b> {{ progTicket.team_name }} </b></span><br>
+        <span class="info">Summary :<b> {{ progTicket.summary }} </b></span></a>
+
+ <p>*********************************************************************</p>
+    			{% endfor %}
+					<p>Currently {{ progTicketsCount }} in progress tickets</p>
+		</div>
+				<div id="home-left-inner">
+					<h3 class="enquiry-h3">Waiting Tickets</h3>
+					      {% for waitTicket in waitTickets %}
+ <p>*********************************************************************</p>
+        <a href="/ticket/{{ waitTicket.ticket_id }}">
+        <span class="info">Ticket Number :<b> {{ waitTicket.ticket_id }} </b></span>
+        <span class="info">Priority  :<b> {{ waitTicket.priority }} </b></span>
+        <span class="info">Ticket State :<b> {{ waitTicket.state }} </b></span>
+        <span class="info">Assigned to Team:<b> {{ waitTicket.team_name }} </b></span>
+        <span class="info">Summary :<b> {{ waitTicket.summary }} </b></span></a>
+
+ <p>*********************************************************************</p>
+    {% endfor %}
+				<p>Currently {{ waitTicketsCount }} in Waiting tickets</p>
+		</div>
+	</div>
+
+	<div id="home-right-outer">
+		<h3 class="enquiry-h3">Other Functions</h3>
+		<hr class="enquiry-hr">
+		<hr class="enquiry-hr">
+		<div id="home-right-inner">
+			<p>Create a New Ticket</p>
+				<h4>Contact a Team</h4>
+				<p>My Tickets</p>
+
+				<div id="home-link-holder">
+					<a href="../about/index.html#findUs-container" class="home-link"><p>Link to Somewhere >></p></a>
+					<a href="https://goo.gl/maps/nyTEz7nVQhQpU9AY7" class="home-link" target="_blank"><p>Link to Somewhere >></p></a>
+				</div>
+		</div>
+	</div>
+
+</div>
+
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
 
 
 </body>

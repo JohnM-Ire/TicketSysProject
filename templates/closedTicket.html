@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+    <h2>Closed Tickets</h2>
+    <p>Tickets assigned to {{ closedTickets.team_name }} team classified as Fulfilled or Closed Incomplete.</p>
+    <p>Select another team to view closed tickets they were assigned</p>
+<div style="width : 100%; background-color: greenyellow; height: auto">
+       {% for closedTicket in closedTickets %}
+ <p>*********************************************************************</p>
+    <a href="/ticket/{{ closedTicket.ticket_id }}">
+        <p class="info">Ticket Number :<b><br> {{ closedTicket.ticket_id }} </b></p>
+        <p class="info">Priority  :<b><br> {{ closedTicket.priority }} </b></p>
+
+        <p class="info">Ticket State :<b><br> {{ closedTicket.state }} </b></p>
+        <p class="info">Ticket Created :<b><br> {{ closedTicket.ticket_created }} </b></p>
+        <p class="info">Requested by :<b><br> {{ closedTicket.name }} </b></p>
+        <p class="info">Assigned to Team:<b><br> {{ closedTicket.team_name }} </b></p>
+        <p class="info">Summary :<b><br> {{ closedTicket.summary }} </b></p></a>
+
+    <br>
+
+ <p>*********************************************************************</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

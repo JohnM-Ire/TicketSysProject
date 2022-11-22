@@ -8,6 +8,7 @@
 
 
     <h2>Open Tickets</h2>
+    <p><a href="/closedtickets">View Closed Tickets here</a></p>
 <div style="width : 100%; background-color: greenyellow; height: auto">
        {% for openticket in openTickets %}
  <p>*********************************************************************</p>
@@ -26,7 +27,7 @@
  <p>*********************************************************************</p>
     {% endfor %}
 </div>
-        <h2>In-Progress Tickets</h2>
+        <h2 id = "anchor_progress">In-Progress Tickets</h2>
 <div style="width : 100%; background-color: red; height: auto">
 
            {% for progTicket in progTickets %}
