@@ -57,7 +57,7 @@ def home():
                                                  .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
                                                  .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
                                                 Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'In Progress'),
-                                                (Ticket.team_id == loggedteam)).limit(3).all()
+                                                (Ticket.team_id == loggedteam)).limit(2).all()
 
         progTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
                                                  .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
@@ -72,7 +72,7 @@ def home():
                                                  Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
                                                  .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
                                                 Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
-                                                (Ticket.team_id == loggedteam)).limit(3).all()
+                                                (Ticket.team_id == loggedteam)).limit(2).all()
 
         waitTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
                                                  .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
