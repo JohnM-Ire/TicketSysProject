@@ -8,17 +8,6 @@
 </head>
 
 <body>
-<!--<p><a href="/logout">Log out</a></p>-->
-<!--<br>-->
-<!--<p><a href="/adduser">Add User</a></p>-->
-<!--<p><a href="/addTeam">Add Team</a></p>-->
-<!--<p><a href="/teams">View Teams</a></p>-->
-<!--<p><a href="/admin_data">View Admin data</a></p>-->
-<!--<p><a href="/opentickets">Open Tickets</a></p>-->
-<!--<p><a href="/newticket">Create Ticket</a></p>-->
-<!--<br>-->
-<!--<p>Current User ID Logged in : {{ user }}</p>-->
-<!--<br>-->
 
 <div id="wrapper">
 
@@ -49,47 +38,81 @@
 		<div id="home-left-inner">
 			<a href="/opentickets"><h3  class="enquiry-h3">Open Tickets</h3></a>
 			 {% for openticket in openTickets %}
- <p>*********************************************************************</p>
+
     	<a href="/ticket/{{ openticket.ticket_id }}">
-        <span class="info">Ticket Number :<b> {{ openticket.ticket_id }} </b></span>
-        <span class="info">Priority  :<b> {{ openticket.priority }} </b></span>
-        <span class="info">Ticket State :<b> {{ openticket.state }} </b></span>
-        <span class="info">Assigned to Team:<b> {{ openticket.team_name }} </b></span><br>
-        <span class="info">Summary :<b> {{ openticket.summary }} </b></span></a>
-    <br>
- <p>*********************************************************************</p>
+		<table id="hometable">
+			<tr id="tableheader">
+				<td>Ticket Number</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ openticket.ticket_id }}</td>
+				<td> {{ openticket.priority }}</td>
+				<td>{{ openticket.state }}</td>
+				<td>{{ openticket.team_name }}</td>
+				<td id="tdlarge">{{ openticket.summary }}</td>
+			</tr>
+		</table>
+
     {% endfor %}
-			<p>Currently {{ openTicketsCount }} Open Tickets</p>
+			<br><a href="/opentickets"><p style="text-align: center;">Currently {{ openTicketsCount }} Open Tickets</p></a>
+
 		</div>
 				<div id="home-left-inner">
 				<a href="/opentickets#anchor_progress"><h3  class="enquiry-h3">In Progress Tickets</h3></a>
 				{% for progTicket in progTickets %}
- <p>*********************************************************************</p>
-        <a href="/ticket/{{ progTicket.ticket_id }}">
-        <span class="info">Ticket Number :<b> {{ progTicket.ticket_id }} </b></span>
-        <span class="info">Priority  :<b> {{ progTicket.priority }} </b></span>
-        <span class="info">Ticket State :<b> {{ progTicket.state }} </b></span>
-        <span class="info">Assigned to Team:<b> {{ progTicket.team_name }} </b></span><br>
-        <span class="info">Summary :<b> {{ progTicket.summary }} </b></span></a>
+		        <a href="/ticket/{{ progTicket.ticket_id }}">
+		<table id="hometable">
 
- <p>*********************************************************************</p>
-    			{% endfor %}
-					<p>Currently {{ progTicketsCount }} in progress tickets</p>
+			<tr id="tableheader">
+				<td>Ticket Number</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+
+			<tr>
+				<td>{{ progTicket.ticket_id }}</td>
+				<td> {{ progTicket.priority }}</td>
+				<td>{{ progTicket.state }}</td>
+				<td>{{ progTicket.team_name }}</td>
+				<td id="tdlarge">{{ progTicket.summary }}</td>
+			</tr>
+		</table>
+				</a>
+
+  			{% endfor %}
+					<br><a href="/opentickets#anchor_progress"><p style="text-align: center;">Currently {{ progTicketsCount }} in progress tickets</p></a>
 		</div>
 				<div id="home-left-inner">
 					<h3 class="enquiry-h3">Waiting Tickets</h3>
 					      {% for waitTicket in waitTickets %}
- <p>*********************************************************************</p>
         <a href="/ticket/{{ waitTicket.ticket_id }}">
-        <span class="info">Ticket Number :<b> {{ waitTicket.ticket_id }} </b></span>
-        <span class="info">Priority  :<b> {{ waitTicket.priority }} </b></span>
-        <span class="info">Ticket State :<b> {{ waitTicket.state }} </b></span>
-        <span class="info">Assigned to Team:<b> {{ waitTicket.team_name }} </b></span>
-        <span class="info">Summary :<b> {{ waitTicket.summary }} </b></span></a>
+		<table id="hometable">
+			<tr id="tableheader">
+				<td>Ticket Number</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ waitTicket.ticket_id }}</td>
+				<td> {{ waitTicket.priority }}</td>
+				<td>{{ waitTicket.state }}</td>
+				<td>{{ waitTicket.team_name }}</td>
+				<td id="tdlarge">{{ waitTicket.summary }}</td>
+			</tr>
+		</table>
+		</a>
 
- <p>*********************************************************************</p>
     {% endfor %}
-				<p>Currently {{ waitTicketsCount }} in Waiting tickets</p>
+
+				<br><p style="text-align: center;">Currently {{ waitTicketsCount }} in Waiting tickets</p>
 		</div>
 	</div>
 

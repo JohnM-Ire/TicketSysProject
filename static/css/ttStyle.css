@@ -25,11 +25,6 @@ html, body{
 
 }
 
-
-
-
-
-
 #head-home{
 	float: left;
 	width:100%;
@@ -73,8 +68,6 @@ a:hover li.link-buttons {
 	}
 
 
-
-
 footer{
 	float: left;
 	width:100%;
@@ -87,7 +80,6 @@ footer{
 	padding-top: 40px;
 	box-sizing: border-box;
 }
-
 
 
 #home-left-outer{
@@ -119,9 +111,30 @@ footer{
 	box-sizing: border-box;
 }
 
+#hometable{
+	width: 100%;
+	border: 2px solid aqua;
+	border-collapse: collapse;
+	text-align: center;
+
+}
 
 
-
+#tableheader{
+	background: aqua;
+}
+#hometable td{
+	width: 20%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+/*#tdlarge{*/
+/*	width:30%;*/
+/*	text-overflow: ellipsis;*/
+/*	white-space: nowrap;*/
+/*	overflow: hidden;*/
+/*}*/
 #home-right-outer{
 	float: left;
 	width: 50%;
