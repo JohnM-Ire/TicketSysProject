@@ -3,58 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
 </head>
+
 <body>
+
+<div id="wrapper">
+
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
 
 
     <h2>Open Tickets</h2>
     <p><a href="/closedtickets">View Closed Tickets here</a></p>
 <div style="width : 100%; background-color: greenyellow; height: auto">
        {% for openticket in openTickets %}
- <p>*********************************************************************</p>
+
     <a href="/ticket/{{ openticket.ticket_id }}">
-        <p class="info">Ticket Number :<b><br> {{ openticket.ticket_id }} </b></p>
-        <p class="info">Priority  :<b><br> {{ openticket.priority }} </b></p>
+        <table id="hometable">
+			<tr id="tableheader">
 
-        <p class="info">Ticket State :<b><br> {{ openticket.state }} </b></p>
-        <p class="info">Ticket Created :<b><br> {{ openticket.ticket_created }} </b></p>
-        <p class="info">Requested by :<b><br> {{ openticket.name }} </b></p>
-        <p class="info">Assigned to Team:<b><br> {{ openticket.team_name }} </b></p>
-        <p class="info">Summary :<b><br> {{ openticket.summary }} </b></p></a>
+				<td>Ticket Number</td>
+                <td>Ticket Create date</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+                <td>Requested by</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ openticket.ticket_id }}</td>
+				<td> {{ openticket.ticket_created }}</td>
+                <td> {{ openticket.priority }}</td>
+				<td>{{ openticket.state }}</td>
+                <td>{{ openticket.user_id }}, {{ openticket.name }}</td>
+				<td>{{ openticket.team_name }}</td>
+				<td id="tdlarge">{{ openticket.summary }}</td>
+			</tr>
+		</table></a>
 
-    <br>
-
- <p>*********************************************************************</p>
     {% endfor %}
 </div>
         <h2 id = "anchor_progress">In-Progress Tickets</h2>
 <div style="width : 100%; background-color: red; height: auto">
 
            {% for progTicket in progTickets %}
- <p>*********************************************************************</p>
+
         <a href="/ticket/{{ progTicket.ticket_id }}">
-        <p class="info">Ticket Number :<b> <br>{{ progTicket.ticket_id }} </b></p>
-        <p class="info">Priority  :<b><br> {{ progTicket.priority }} </b></p>
-        <p class="info">Ticket State :<b><br> {{ progTicket.state }} </b></p>
-        <p class="info">Ticket Created :<b><br> {{ progTicket.ticket_created }} </b></p>
-        <p class="info">Requested by :<b><br> {{ progTicket.name }} </b></p>
-        <p class="info">Assigned to Team:<b><br> {{ progTicket.team_name }} </b></p>
-        <p class="info">Summary :<b><br> {{ progTicket.summary }} </b></p></a>
+        <table id="hometable">
+			<tr id="tableheader">
 
- <p>*********************************************************************</p>
+				<td>Ticket Number</td>
+                <td>Ticket Create date</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+                <td>Requested by</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ progTicket.ticket_id }}</td>
+				<td> {{ progTicket.ticket_created }}</td>
+                <td> {{ progTicket.priority }}</td>
+				<td>{{ progTicket.state }}</td>
+                <td>{{ progTicket.user_id }}, {{ progTicket.name }}</td>
+				<td>{{ progTicket.team_name }}</td>
+				<td id="tdlarge">{{ progTicket.summary }}</td>
+			</tr>
+		</table>
+        </a>
+
     {% endfor %}
+</div>>
+<div>
       {% for waitTicket in waitTickets %}
- <p>*********************************************************************</p>
-        <a href="/ticket/{{ waitTicket.ticket_id }}">
-        <p class="info">Ticket Number :<b> <br>{{ waitTicket.ticket_id }} </b></p>
-        <p class="info">Priority  :<b><br> {{ waitTicket.priority }} </b></p>
-        <p class="info">Ticket State :<b><br> {{ waitTicket.state }} </b></p>
-        <p class="info">Ticket Created :<b><br> {{ waitTicket.ticket_created }} </b></p>
-        <p class="info">Requested by :<b><br> {{ waitTicket.name }} </b></p>
-        <p class="info">Assigned to Team:<b><br> {{ waitTicket.team_name }} </b></p>
-        <p class="info">Summary :<b><br> {{ waitTicket.summary }} </b></p></a>
 
- <p>*********************************************************************</p>
+        <a href="/ticket/{{ waitTicket.ticket_id }}">
+        <table id="hometable">
+			<tr id="tableheader">
+
+				<td>Ticket Number</td>
+                <td>Ticket Create date</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+                <td>Requested by</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ waitTicket.ticket_id }}</td>
+				<td> {{ waitTicket.ticket_created }}</td>
+                <td> {{ waitTicket.priority }}</td>
+				<td>{{ waitTicket.state }}</td>
+                <td>{{ waitTicket.user_id }}, {{ waitTicket.name }}</td>
+				<td>{{ waitTicket.team_name }}</td>
+				<td id="tdlarge">{{ waitTicket.summary }}</td>
+			</tr>
+		</table>
     {% endfor %}
 </div>
 
@@ -62,20 +125,39 @@
 <div style="width : 100%; background-color: green; height: auto">
 
            {% for myTicket in myTickets %}
- <p>*********************************************************************</p>
-        <a href="/ticket/{{ myTicket.ticket_id }}">
-        <p class="info">Ticket Number :<b> <br>{{ myTicket.ticket_id }} </b></p>
-        <p class="info">Priority  :<b><br> {{ myTicket.priority }} </b></p>
-        <p class="info">Ticket State :<b><br> {{ myTicket.state }} </b></p>
-        <p class="info">Ticket Created :<b><br> {{ myTicket.ticket_created }} </b></p>
-        <p class="info">Requested by :<b><br> {{ myTicket.name }} </b></p>
-        <p class="info">Assigned to Team:<b><br> {{ myTicket.team_name }} </b></p>
-        <p class="info">Summary :<b><br> {{ myTicket.summary }} </b></p></a>
 
- <p>*********************************************************************</p>
+        <a href="/ticket/{{ myTicket.ticket_id }}">
+        <table id="hometable">
+			<tr id="tableheader">
+
+				<td>Ticket Number</td>
+                <td>Ticket Create date</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+                <td>Requested by</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ myTicket.ticket_id }}</td>
+				<td> {{ myTicket.ticket_created }}</td>
+                <td> {{ myTicket.priority }}</td>
+				<td>{{ myTicket.state }}</td>
+                <td>{{ myTicket.user_id }}, {{ myTicket.name }}</td>
+				<td>{{ myTicket.team_name }}</td>
+				<td id="tdlarge">{{ myTicket.summary }}</td>
+			</tr>
+		</table>
+		</a>
         {% endfor %}
 </div>
+</div>
 
+
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
 
 
 
