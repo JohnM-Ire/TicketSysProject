@@ -10,8 +10,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
 </head>
+
 <body>
+
+<div id="wrapper">
+
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
+
 
   <h1 style="margin: 40px;"><u>All Registered Users</u></h1>
 
@@ -46,8 +71,14 @@
             <hr>
             <br>
     {% endfor %}
-</body>
-</html>
+
+</div>
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
+
+
 
 </body>
 </html>

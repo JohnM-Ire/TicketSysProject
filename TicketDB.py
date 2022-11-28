@@ -77,9 +77,23 @@ class Ticket(db.Model):
         self.environment = environment
         self.ticket_sp_instruction = ticket_sp_instruction
 
-
     def __repr__(self):
         return f"{self.ticket_id}:{self.ticket_id}"
+
+class Assigned(db.Model):
+    __tablename__ = "assignedtickettable"
+    assignment_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+    assignedUserRel = db.relationship("User", backref='Assigned')
+    ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
+    assignUserTicketRel = db.relationship("Ticket", backref='Assigned')
+
+    def __init__(self, user_id, ticket_id):
+        self.user_id = user_id
+        self.ticket_id = ticket_id
+
+    def __repr__(self):
+        return f"{self.assignment_id}:{self.assignment_id}"
 
 
 class TComment(db.Model):

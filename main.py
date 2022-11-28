@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, session, ses
 from sqlalchemy.sql import select, alias, desc, or_, and_
 
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, Ticket, TComment
+from TicketDB import db, User, Team, Ticket, TComment, Assigned
 
 import itertools
 import jinja2
@@ -33,6 +33,10 @@ def home():
         loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
         loggedteam = str(loggedteam)
         loggedteam = loggedteam.strip("[ ] , ( )")
+        username = User.query.with_entities(User.name).filter(User.user_id == user).all()
+        username = str(username)
+        username = username.strip("[ ] , ( ) '")
+
 
         openTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket.
                                                  ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
@@ -83,7 +87,7 @@ def home():
 
         return render_template('home.html', user=user, openTickets=openTickets, openTicketsCount=openTicketsCount,
                                progTickets=progTickets, progTicketsCount=progTicketsCount, waitTickets=waitTickets,
-                               waitTicketsCount=waitTicketsCount)
+                               waitTicketsCount=waitTicketsCount, username=username)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -290,6 +294,8 @@ def viewTicket(chosen_ticket_id):
     allComments = TComment.query.with_entities(TComment.comm_id, TComment.ticket_id, TComment.comment, TComment.user_id, TComment
                                                .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id)\
         .order_by(desc(TComment.timecreated)).all()
+    # assigneduser = Assigned.query.with_entities(Assigned.user_id, Assigned.ticket_id, User.user_id, User.name,
+    #                                             Team.team_name)
 
     if request.method == 'GET':
         if ticketinfo:

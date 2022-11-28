@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
 </head>
+
 <body>
+
+<div id="wrapper">
+
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
 
 
     <h2>Closed Tickets</h2>
@@ -12,22 +36,39 @@
     <p>Select another team to view closed tickets they were assigned</p>
 <div style="width : 100%; background-color: greenyellow; height: auto">
        {% for closedTicket in closedTickets %}
- <p>*********************************************************************</p>
+
     <a href="/ticket/{{ closedTicket.ticket_id }}">
-        <p class="info">Ticket Number :<b><br> {{ closedTicket.ticket_id }} </b></p>
-        <p class="info">Priority  :<b><br> {{ closedTicket.priority }} </b></p>
+        <table id="hometable">
+			<tr id="tableheader">
 
-        <p class="info">Ticket State :<b><br> {{ closedTicket.state }} </b></p>
-        <p class="info">Ticket Created :<b><br> {{ closedTicket.ticket_created }} </b></p>
-        <p class="info">Requested by :<b><br> {{ closedTicket.name }} </b></p>
-        <p class="info">Assigned to Team:<b><br> {{ closedTicket.team_name }} </b></p>
-        <p class="info">Summary :<b><br> {{ closedTicket.summary }} </b></p></a>
-
-    <br>
-
- <p>*********************************************************************</p>
+				<td>Ticket Number</td>
+                <td>Ticket Create date</td>
+				<td>Priority</td>
+				<td>Ticket State</td>
+                <td>Requested by</td>
+				<td>Assigned to Team</td>
+				<td id="tdlarge">Summary</td>
+			</tr>
+			<tr>
+				<td>{{ closedTicket.ticket_id }}</td>
+				<td> {{ closedTicket.ticket_created }}</td>
+                <td> {{ closedTicket.priority }}</td>
+				<td>{{ closedTicket.state }}</td>
+                <td>{{ closedTicket.user_id }}, {{ closedTicket.name }}</td>
+				<td>{{ closedTicket.team_name }}</td>
+				<td id="tdlarge">{{ closedTicket.summary }}</td>
+			</tr>
+		</table>
+    </a>
     {% endfor %}
 </div>
+</div>
+
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
+
 
 </body>
 </html>
