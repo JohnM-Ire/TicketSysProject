@@ -47,6 +47,10 @@ class User(db.Model):
 
 
 # Consider a Ticket update field, where when we update the ticket state, the current DAteTime() is entered/Updated
+# class Assigned:
+#     pass
+
+
 class Ticket(db.Model):
     __tablename__ = "tickettable"
 
@@ -63,8 +67,7 @@ class Ticket(db.Model):
     summary = db.Column(db.String(80))
     environment = db.Column(db.String(50))
     ticket_sp_instruction = db.Column(db.String(200))
-    # assigned_to = db.Column(db.Integer, db.ForeignKey(User.user_id))
-    # assignticket_user = db.relationship("User", backref='Ticket')
+    # assigned_to = db.Column(db.String(80), nullable=True, default="unassigned")
 
     def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):
         self.user_id = user_id
@@ -75,25 +78,27 @@ class Ticket(db.Model):
         self.priority = priority
         self.summary = summary
         self.environment = environment
-        self.ticket_sp_instruction = ticket_sp_instruction
+        # self.ticket_sp_instruction = ticket_sp_instruction
+        # self.assigned_to = assigned_to
 
     def __repr__(self):
         return f"{self.ticket_id}:{self.ticket_id}"
 
-class Assigned(db.Model):
-    __tablename__ = "assignedtickettable"
-    assignment_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-    assignedUserRel = db.relationship("User", backref='Assigned')
-    ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
-    assignUserTicketRel = db.relationship("Ticket", backref='Assigned')
 
-    def __init__(self, user_id, ticket_id):
-        self.user_id = user_id
-        self.ticket_id = ticket_id
-
-    def __repr__(self):
-        return f"{self.assignment_id}:{self.assignment_id}"
+# class Assigned(db.Model):
+#     __tablename__ = "assignedtickettable"
+#     assignment_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+#     assignedUserRel = db.relationship("User", backref='Assigned')
+#     ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
+#     assignUserTicketRel = db.relationship("Ticket", backref='Assigned')
+#
+#     def __init__(self, user_id, ticket_id):
+#         self.user_id = user_id
+#         self.ticket_id = ticket_id
+#
+#     def __repr__(self):
+#         return f"{self.assignment_id}:{self.assignment_id}"
 
 
 class TComment(db.Model):
@@ -114,20 +119,21 @@ class TComment(db.Model):
     def __repr__(self):
         return f"{self.comm_id}:{self.comm_id}"
 
-#
-# class LoginUser(db.Model):
-#     __tablename__ = "loggedintable"
-#     login_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-#     login_user = db.relationship("User", backref='LoginUser')
-#     email = db.Column(db.String(50), unique=True)
-#     password = db.Column(db.String(12))
-#     loginTime = db.Column(db.DATETIME, default=func.now())
-#
-#     def __init__(self, email, password):
-#
-#         self.email = email
-#         self.password = password
-#
-#     def __repr__(self):
-#         return f"{self.login_id}:{self.login_id}"
+
+class TeamChat(db.Model):
+    __tablename__ = "teamchattable"
+    teamcomment_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+    teamcommuserrel = db.relationship("User", backref='TeamChat')
+    team_id = db.Column(db.Integer, db.ForeignKey(Team.team_id))
+    team_teamcomment = db.relationship("Team", backref='TeamChat')
+    timecreated = db.Column(db.String(50), default=func.now(), index=True)
+    comment = db.Column(db.String(240))
+
+    def __init__(self, user_id, team_id, comment):
+        self.user_id = user_id
+        self.team_id = team_id
+        self.comment = comment
+
+    def __repr__(self):
+        return f"{self.teamcomment_id}:{self.teamcomment_id}"

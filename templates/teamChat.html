@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
+</head>
+
+<body>
+
+<div id="wrapper">
+
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
+			<h1>Welcome {{ username }}</h1>
+<div>
+<form id="comment-form" action='' method = "POST">
+		<p>Enter Comments: </p>
+        <label for="comment"></label>
+        <textarea name = "comment" rows="15" cols="50"></textarea>
+		<input type = "submit" value = "Add Comment" id="commentButton">
+	</form>
+</div>
+<div>
+     {% for comment in teamComments %}
+<!--	<br>-->
+<!--		<p>comm ID {{ comment.teamcomment_id }}</p>-->
+<!--		<p>UserID {{ comment.user_id }}</p>-->
+<!--		<p>TimeCreated {{ comment.timecreated }}</p>-->
+<!--		<p>User Name {{ comment.name }}</p>-->
+<!--		<p>Team ID {{ comment.team_id }}</p>-->
+	<br>
+        <p>{{ comment.name }} wrote: </p>
+
+        <p>
+<!--			name ="comment" rows="20" cols="50"-->
+			{{ comment.comment }}</p>
+		 <p>{{ comment.timecreated }}</p>
+     {% endfor %}
+</div>
+</div>
+
+</div>
+
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
+
+
+</body>
+</html>

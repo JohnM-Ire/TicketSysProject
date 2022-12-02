@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, session, ses
 from sqlalchemy.sql import select, alias, desc, or_, and_
 
 # from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, Ticket, TComment, Assigned
+from TicketDB import db, User, Team, Ticket, TComment, TeamChat
 
 import itertools
 import jinja2
@@ -19,6 +19,9 @@ db.init_app(app)
 
 @app.before_first_request
 def create_table():
+    # db.session.query(Ticket).delete()
+    # db.session.commit()
+    # db.drop_all()
     db.create_all()
 
 
@@ -124,14 +127,14 @@ def addUser():
         return render_template('addUser.html', teams=teams)
 
     if request.method == 'POST':
-        username = request.form['username']
+        username = "n/a"
         name = request.form['name']
         email = request.form['email']
         jobTitle = request.form['jobTitle']
         password = request.form['password']
-        tasksComplete = request.form['tasksComplete']
+        tasksComplete = 0
         team_id = request.form['team_id']
-        if username == "" or name == "" or email == "" or jobTitle == "" or password == "":
+        if name == "" or email == "" or jobTitle == "" or password == "":
             return 'Please go back and enter values for all fields'
         else:
             newuser = User(username=username, name=name, email=email, jobTitle=jobTitle, password=password,
@@ -204,6 +207,44 @@ def AllTeams():
     return render_template('teamlist.html', teams=teams)
 
 
+@app.route('/teamchat', methods=['GET', 'POST'])
+def teamChat():
+
+    user = session["user"]
+
+    loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
+    loggedteam = str(loggedteam)
+    loggedteam = loggedteam.strip("[ ] , ( )")
+
+    username = User.query.with_entities(User.name).filter(User.user_id == user).all()
+    username = str(username)
+    username = username.strip("[ ] , ( ) '")
+
+    teamComments = TeamChat.query.with_entities(TeamChat.teamcomment_id, TeamChat.comment, TeamChat.user_id,
+                                                TeamChat.timecreated, User.name, User.team_id).join(User, TeamChat.
+                                                user_id == User.user_id).filter(TeamChat.team_id == loggedteam).\
+                                                order_by(desc(TeamChat.timecreated)).all()
+
+
+    if request.method == 'GET':
+        return render_template('teamChat.html', teamComments=teamComments)
+
+    if request.method == 'POST':
+        user_id = user
+        team_id = loggedteam
+        comment = request.form['comment']
+
+        if comment == "":
+            return 'Please go back and enter comment'
+
+        else:
+            newTeamComment = TeamChat(user_id=user_id, team_id=team_id, comment=comment)
+
+        db.session.add(newTeamComment)
+        db.session.commit()
+        return redirect('/teamchat')
+
+
 @app.route('/teams/<int:chosen_id>')
 def Teaminfo(chosen_id):
     teaminfo = Team.query.filter_by(team_id=chosen_id).first()
@@ -234,7 +275,7 @@ def addNewTicket():
         summary = request.form['summary']
         environment = request.form['environment']
         ticket_sp_instruction = request.form['ticket_sp_instruction']
-        # assigned_to = request.form['assigned_to']
+        # assigned_to = "unassigned"
 
         if user_id == "" or description == "" or team_id == "":
             return 'Please go back and enter values for fields'
@@ -285,22 +326,21 @@ def allOpenTickets():
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
 def viewTicket(chosen_ticket_id):
-    ticketinfo = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.ticket_created, Ticket.description,
-                    Ticket.state, Ticket.team_id, Team.team_name, User.email, Ticket.contact_num, Ticket.priority, Ticket.summary,
-                    Ticket.environment, Ticket.ticket_sp_instruction).join(Team,Ticket.team_id == Team.
-                    team_id).join(User, Ticket.user_id == User.user_id).filter(Ticket.ticket_id == chosen_ticket_id).all()
+    ticketinfo = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.ticket_created,
+                  Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.email,
+                 Ticket.contact_num, Ticket.priority, Ticket.summary, Ticket.environment, Ticket.ticket_sp_instruction)\
+                 .join(Team,Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.user_id).filter\
+        (Ticket.ticket_id == chosen_ticket_id).all()
 
     teamList = Team.query.all()
     allComments = TComment.query.with_entities(TComment.comm_id, TComment.ticket_id, TComment.comment, TComment.user_id, TComment
                                                .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id)\
         .order_by(desc(TComment.timecreated)).all()
-    # assigneduser = Assigned.query.with_entities(Assigned.user_id, Assigned.ticket_id, User.user_id, User.name,
-    #                                             Team.team_name)
+
 
     if request.method == 'GET':
         if ticketinfo:
             return render_template('ticket.html', ticketinfo=ticketinfo, teamList=teamList, allComments=allComments)
-    # return f"No Ticket with id {chosen_ticket_id} in system"
 
     if request.method == 'POST':
         comment = request.form['comment']
@@ -328,10 +368,16 @@ def editTicket(chosen_ticket_id):
                     team_id).join(User, Ticket.user_id == User.user_id).filter(Ticket.ticket_id == chosen_ticket_id).all()
 
     teamList = Team.query.all()
+    user = session["user"]
+
+    loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
+    loggedteam = str(loggedteam)
+    loggedteam = loggedteam.strip("[ ] , ( )")
+    allMembers = User.query.with_entities(User.name).filter(User.team_id == loggedteam).all()
 
     if request.method == 'GET':
         if ticketinfo:
-            return render_template('editTicket.html', ticketinfo=ticketinfo, teamList=teamList)
+            return render_template('editTicket.html', ticketinfo=ticketinfo, teamList=teamList, allMembers=allMembers)
     # return f"No Ticket with id {chosen_ticket_id} in system"
 
     if request.method == 'POST':
@@ -339,11 +385,12 @@ def editTicket(chosen_ticket_id):
         team_id = request.form['team_id']
         priority = request.form['priority']
         environment = request.form['environment']
-
+        # assigned_to = request.form['assigned_to']
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.state: state})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.team_id: team_id})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.priority: priority})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.environment: environment})
+        # db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.assigned_to: assigned_to})
         db.session.commit()
         return redirect('/opentickets')
 
