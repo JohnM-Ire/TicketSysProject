@@ -227,7 +227,7 @@ def teamChat():
 
 
     if request.method == 'GET':
-        return render_template('teamChat.html', teamComments=teamComments)
+        return render_template('teamChat.html', teamComments=teamComments, username=username)
 
     if request.method == 'POST':
         user_id = user

@@ -30,16 +30,8 @@
 			</a>
 		</ul>
 	</header>
-			<h1>Welcome {{ username }}</h1>
-<div>
-<form id="comment-form" action='' method = "POST">
-		<p>Enter Comments: </p>
-        <label for="comment"></label>
-        <textarea name = "comment" rows="15" cols="50"></textarea>
-		<input type = "submit" value = "Add Comment" id="commentButton">
-	</form>
-</div>
-<div>
+	<h1>Welcome {{ username }}</h1>
+<div id = "teamchat_rightouter">
      {% for comment in teamComments %}
 <!--	<br>-->
 <!--		<p>comm ID {{ comment.teamcomment_id }}</p>-->
@@ -56,7 +48,16 @@
 		 <p>{{ comment.timecreated }}</p>
      {% endfor %}
 </div>
+<div id = "teamchat_leftouter">
+
+<form id="comment-form" action='' method = "POST">
+		<p>Enter Comments: </p>
+        <label for="comment"></label>
+        <textarea name = "comment" rows="15" cols="50"></textarea>
+		<input type = "submit" value = "Add Comment" id="commentButton">
+	</form>
 </div>
+
 
 </div>
 

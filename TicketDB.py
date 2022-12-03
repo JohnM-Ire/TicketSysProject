@@ -137,3 +137,4 @@ class TeamChat(db.Model):
 
     def __repr__(self):
         return f"{self.teamcomment_id}:{self.teamcomment_id}"
+

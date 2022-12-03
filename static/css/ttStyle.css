@@ -174,3 +174,17 @@ td{
 	text-decoration: underline;
 
 }
+/*TEAM CHAT PAGE*/
+#teamchat_leftouter{
+	float: left;
+	width: 50%;
+	background-color: antiquewhite;
+
+
+}
+#teamchat_rightouter{
+	float: left;
+	width: 50%;
+	background-color: yellow;
+
+}
