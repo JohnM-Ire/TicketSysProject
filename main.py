@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, flash, session, sessions
 from sqlalchemy.sql import select, alias, desc, or_, and_
 
+import ssl
+from email.message import EmailMessage
+import smtplib
 # from flask_sqlalchemy import SQLAlchemy
 from TicketDB import db, User, Team, Ticket, TComment, TeamChat
 
@@ -367,12 +370,26 @@ def editTicket(chosen_ticket_id):
                     Ticket.environment, Ticket.ticket_sp_instruction).join(Team,Ticket.team_id == Team.
                     team_id).join(User, Ticket.user_id == User.user_id).filter(Ticket.ticket_id == chosen_ticket_id).all()
 
+    ticketDesc = Ticket.query.with_entities(Ticket.description).filter(Ticket.ticket_id == chosen_ticket_id).all()
+    ticketDesc = str(ticketDesc)
+    ticketDesc = ticketDesc.strip("[ ] , ( ) '")
+
+    ticketrequester_email = User.query.with_entities(User.email).join(Ticket, User.user_id == Ticket.user_id).filter(Ticket
+                        .ticket_id == chosen_ticket_id).all()
+    ticketrequester_email = str(ticketrequester_email)
+    ticketrequester_email = ticketrequester_email.strip("[ ] , ( ) '")
+
     teamList = Team.query.all()
+
     user = session["user"]
+    username = User.query.with_entities(User.name).filter(User.user_id == user).all()
+    username = str(username)
+    username = username.strip("[ ] , ( ) '")
 
     loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
     loggedteam = str(loggedteam)
     loggedteam = loggedteam.strip("[ ] , ( )")
+
     allMembers = User.query.with_entities(User.name).filter(User.team_id == loggedteam).all()
 
     if request.method == 'GET':
@@ -382,6 +399,35 @@ def editTicket(chosen_ticket_id):
 
     if request.method == 'POST':
         state = request.form['state']
+        if state == 'Fulfilled':
+            email_source = 'ticketsysJM@gmail.com'
+            password = 'nwggowjpxnhpgvcv'
+            email_list = 'johnamurphy0185@gmail.com'
+
+            email_subj = 'Your Job ticket ' + str(chosen_ticket_id) + ' request has been fulfilled'
+            email_body = """To be sent to """ + ticketrequester_email + """
+            Your Job ticket number """ + str(chosen_ticket_id) + """ has been fulfilled by """ + username + """".
+            
+             Ticket Description: """ + ticketDesc + """"
+
+            Thank you,
+            Ticket Sys Team.
+            """
+            email = EmailMessage()
+            email['From'] = email_source
+            email['To'] = email_list
+            email['Subject'] = email_subj
+            email.set_content(email_body)
+
+            securitycont = ssl.create_default_context()
+
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=securitycont) as smtp:
+                smtp.login(email_source, password)
+                smtp.sendmail(email_source, email_list, email.as_string())
+                
+                
+                
+                
         team_id = request.form['team_id']
         priority = request.form['priority']
         environment = request.form['environment']
