@@ -33,7 +33,7 @@
 			<h1>Welcome {{ username }}</h1>
 
 	<div id="home-left-outer">
-		<h3 class="enquiry-h3">Tickets</h3>
+		<h3 class="enquiry-h3">Tickets assigned to your team</h3>
 		<hr class="enquiry-hr">
 		<hr class="enquiry-hr">
 		<div id="home-left-inner">
@@ -89,48 +89,96 @@
   			{% endfor %}
 					<br><a href="/opentickets#anchor_progress"><p style="text-align: center;">Currently {{ progTicketsCount }} in progress tickets</p></a>
 		</div>
-				<div id="home-left-inner">
-					<h3 class="enquiry-h3">Waiting Tickets</h3>
-					      {% for waitTicket in waitTickets %}
-        <a href="/ticket/{{ waitTicket.ticket_id }}">
-		<table id="hometable">
-			<tr id="tableheader">
-				<td>Ticket Number</td>
-				<td>Priority</td>
-				<td>Ticket State</td>
-				<td>Assigned to Team</td>
-				<td id="tdlarge">Summary</td>
-			</tr>
-			<tr>
-				<td>{{ waitTicket.ticket_id }}</td>
-				<td> {{ waitTicket.priority }}</td>
-				<td>{{ waitTicket.state }}</td>
-				<td>{{ waitTicket.team_name }}</td>
-				<td id="tdlarge">{{ waitTicket.summary }}</td>
-			</tr>
-		</table>
-		</a>
+<!--				<div id="home-left-inner">-->
+<!--					<h3 class="enquiry-h3">Waiting Tickets</h3>-->
+<!--					      {% for waitTicket in waitTickets %}-->
+<!--							<a href="/ticket/{{ waitTicket.ticket_id }}">-->
+<!--							<table id="hometable">-->
+<!--								<tr id="tableheader">-->
+<!--									<td>Ticket Number</td>-->
+<!--									<td>Priority</td>-->
+<!--									<td>Ticket State</td>-->
+<!--									<td>Assigned to Team</td>-->
+<!--									<td id="tdlarge">Summary</td>-->
+<!--								</tr>-->
+<!--								<tr>-->
+<!--									<td>{{ waitTicket.ticket_id }}</td>-->
+<!--									<td> {{ waitTicket.priority }}</td>-->
+<!--									<td>{{ waitTicket.state }}</td>-->
+<!--									<td>{{ waitTicket.team_name }}</td>-->
+<!--									<td id="tdlarge">{{ waitTicket.summary }}</td>-->
+<!--								</tr>-->
+<!--							</table>-->
+<!--							</a>-->
+<!--					-->
+<!--						{% endfor %}-->
 
-    {% endfor %}
-
-				<br><p style="text-align: center;">Currently {{ waitTicketsCount }} in Waiting tickets</p>
-		</div>
+<!--						<br><p style="text-align: center;">Currently {{ waitTicketsCount }} in Waiting tickets</p>-->
+<!--				</div>-->
 	</div>
 
-	<div id="home-right-outer">
-		<h3 class="enquiry-h3">Other Functions</h3>
-		<hr class="enquiry-hr">
-		<hr class="enquiry-hr">
-		<div id="home-right-inner">
-			<a href="/newticket"> <p>Create a New Ticket</p></a>
-			<a href="/teams"><p>Contact a Team</p></a>
-			<a href="/teamchat"><p>Your Team Chat</p></a>
-			<a href="/opentickets#anchor_myTickets"><p>My Tickets</p></a>
 
-				<div id="home-link-holder">
-					<a href="" class="home-link"><p>Link to Somewhere >></p></a>
-					<a href="" class="home-link" target="_blank"><p>Link to Somewhere >></p></a>
+	<div id="home-right-outer">
+		<h3 class="enquiry-h3"></h3>
+<!--		<hr class="enquiry-hr">-->
+<!--		<hr class="enquiry-hr">-->
+
+		<div id="home-right-box_holder">
+				<div id = "home_num_1" class = "home-numbox">
+					<a href= "/opentickets">
+					<p class="large_num">{{ openTicketsCount }}</p>
+					<div id = "home_text_1" class = "home-textbox">
+						<p class ="small_text">Open Tickets</p>
 				</div>
+			</a>
+			</div>
+
+			<div id = "home_num_2" class = "home-numbox">
+				<a href="/opentickets#anchor_progress">
+					<p class="large_num">{{ progTicketsCount }}</p>
+					<div id = "home_text_2" class = "home-textbox">
+						<p class ="small_text">In Progress Tickets</p>
+					</div>
+				</a>
+			</div>
+
+			<div id = "home_num_3" class = "home-numbox">
+				<a href="/closedtickets">
+					<p class="large_num">{{ closedTicketsCount }}</p>
+					<div id = "home_text_3" class = "home-textbox">
+						<p class ="small_text">Closed Tickets</p>
+					</div>
+				</a>
+			</div>
+		</div>
+
+
+				<div id="home-right-inner">
+					<a href="/newticket">
+						<div class="home-right-rect">
+							<p class="rect_text">Create a New Ticket</p>
+						</div>
+					</a>
+
+			<a href="/teams">
+				<div class="home-right-rect">
+					<p class="rect_text">Contact a Team</p>
+				</div>
+			</a>
+			<a href="/teamchat">
+				<div class="home-right-rect">
+					<p class="rect_text">Your Team Chat</p>
+				</div>
+			</a>
+			<a href="/opentickets#anchor_myTickets">
+				<div class="home-right-rect">
+					<p class="rect_text">My Tickets</p>
+				</div>
+			</a>
+<!--			<div id="home-link-holder">-->
+<!--				<a href="" class="home-link"><p>Link to Somewhere >></p></a>-->
+<!--				<a href="" class="home-link" target="_blank"><p>Link to Somewhere >></p></a>-->
+<!--			</div>-->
 		</div>
 	</div>
 

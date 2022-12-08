@@ -3,24 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
 </head>
 <body>
 
- <p>Enter the user details for your account below</p><br>
-         <form id="user-form" action='' method = "POST">
+<div id="wrapper">
+    <div id = "square_container">
+        <div id="login_content">
+            <div id="login_img">
+                <img src="../static/images/LoginUnlock.png" class="login_images" alt="Login in Image"></a>
+            </div>
+             <form id="user-form" action='' method = "POST">
 
-                <p>Enter Login details:</p>
-                <p>Enter email :</p>
-                <label for="email"></label>
-                <input type = "text" name = "email" class="user-input"><br>
+                 <label for="email"></label><br>
+                    <input type = "text" placeholder="Enter Email" name = "email" class="user-input" required><br>
 
-                <p>Please Enter your Password: </p>
-                <label for="password"></label>
-                <input type = "password" name = "password" class="user-input"><br>
+                 <label for="password"></label><br>
+                    <input type = "password" placeholder="Enter Password" name = "password" class="user-input" required><br>
+
+                 <button type = "submit" value = "Login" id="userButton">Login</button>
+             </form>
+            <br>
+
+            <p>Don't have an account ? <a href="/adduser">Sign Up here</a></p>
+        </div>
 
 
-             <input type = "submit" value = "Login" id="userButton">
-         </form>
-        <p><a href="/adduser">Sign Up</a></p>
+    </div>
+</div>
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
+
 </body>
 </html>

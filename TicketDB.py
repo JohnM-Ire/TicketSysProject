@@ -138,3 +138,33 @@ class TeamChat(db.Model):
     def __repr__(self):
         return f"{self.teamcomment_id}:{self.teamcomment_id}"
 
+
+
+# class CompleteTicket(db.Model):
+#     __tablename__ = "completetable"
+#
+#     closedticket_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+#     ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
+#     ticketrelation = db.relationship("Ticket", backref='CompleteTicket')
+#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
+#     requested_user = db.relationship("User", backref='CompleteTicket')
+#     ticket_completed = db.Column(db.String(50), default=func.now())
+#     completed_by = db.Column(db.String(50))
+#     complete_comment = db.Column(db.String(300))
+#
+#
+#
+#     def __init__(self, closedticket_id, ticket_id, user_id, ticket_completed, completed_by, complete_comment):
+#         self.closedticket_id = closedticket_id
+#         self.ticket_id = ticket_id
+#         self.user_id = user_id
+#         self.ticket_completed = ticket_completed
+#         self.completed_by = completed_by
+#         self.complete_comment = complete_comment
+#
+#
+#     def __repr__(self):
+#         return f"{self.closedticket_id}:{self.closedticket_id}"
+
+
+

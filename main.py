@@ -43,7 +43,6 @@ def home():
         username = str(username)
         username = username.strip("[ ] , ( ) '")
 
-
         openTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket.
                                                  ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
                                                  Team.team_name, User.
@@ -52,49 +51,46 @@ def home():
                                                 .join(User, Ticket.user_id == User.user_id).filter(
                                                 and_(Ticket.state == 'Open', Ticket.team_id == loggedteam)).limit(3).all()
 
-        openTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket.
-                                                 ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-                                                 Team.team_name, User.
-                                                 email, Ticket.priority, Ticket.summary, Ticket.environment,
-                                                 Ticket.ticket_sp_instruction) \
-            .join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
-                                                             user_id == User.user_id).filter(
-            and_(Ticket.state == 'Open', Ticket.team_id == loggedteam)).count()
+        openTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, Ticket.team_id).join(Team,
+                                                Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
+                                                user_id).filter(and_(Ticket.state == 'Open', Ticket.team_id ==
+                                                loggedteam)).count()
 
         progTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
                                                  .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-                                                 Team.team_name, User
-                                                 .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
-                                                 .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
-                                                Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'In Progress'),
-                                                (Ticket.team_id == loggedteam)).limit(2).all()
+                                                 Team.team_name, User.email, Ticket.priority, Ticket.summary,
+                                                 Ticket.environment, Ticket.ticket_sp_instruction).join(Team,
+                                                Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
+                                                user_id).filter(and_(Ticket.state == 'In Progress'), (Ticket.team_id
+                                                == loggedteam)).limit(2).all()
 
-        progTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
-                                                 .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-                                                 Team.team_name, User
-                                                 .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
-                                                 .ticket_sp_instruction).join(Team,
-                                                Ticket.team_id == Team.team_id).join(User,Ticket.user_id == User.user_id).filter(
-                                                and_(Ticket.state == 'In Progress'), (Ticket.team_id == loggedteam)).count()
+        progTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, Ticket.team_id).join(Team,
+                                                Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
+                                                user_id).filter(and_(Ticket.state == 'In Progress'), (Ticket.
+                                                team_id == loggedteam)).count()
 
-        waitTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
-                                                 .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-                                                 Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
-                                                 .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
-                                                Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
-                                                (Ticket.team_id == loggedteam)).limit(2).all()
+        # waitTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
+        #                                          .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
+        #                                          Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
+        #                                          .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
+        #                                         Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
+        #                                         (Ticket.team_id == loggedteam)).limit(2).all()
 
-        waitTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
-                                                 .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-                                                 Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
-                                                 .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
-                                                Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
-                                                (Ticket.team_id == loggedteam)).count()
+        closedTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, Ticket.team_id).join(Team,
+                                                   Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
+                                                   user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
+                                                   'Closed Incomplete'), Ticket.team_id == loggedteam)).count()
+
+        # waitTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
+        #                                          .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
+        #                                          Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
+        #                                          .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User,
+        #                                         Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
+        #                                         (Ticket.team_id == loggedteam)).count()
 
         return render_template('home.html', user=user, openTickets=openTickets, openTicketsCount=openTicketsCount,
-                               progTickets=progTickets, progTicketsCount=progTicketsCount, waitTickets=waitTickets,
-                               waitTicketsCount=waitTicketsCount, username=username)
-
+                               progTickets=progTickets, progTicketsCount=progTicketsCount,
+                               closedTicketsCount=closedTicketsCount, username=username)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -139,6 +135,11 @@ def addUser():
         team_id = request.form['team_id']
         if name == "" or email == "" or jobTitle == "" or password == "":
             return 'Please go back and enter values for all fields'
+
+        elif db.session.query(User.email).filter_by(email=email).first() is not None:
+            return 'The email you have entered already exists for another user.\n ' \
+                   'please go back and choose a different email'
+
         else:
             newuser = User(username=username, name=name, email=email, jobTitle=jobTitle, password=password,
                            tasksComplete=tasksComplete, team_id=team_id)
@@ -405,8 +406,8 @@ def editTicket(chosen_ticket_id):
             email_list = 'johnamurphy0185@gmail.com'
 
             email_subj = 'Your Job ticket ' + str(chosen_ticket_id) + ' request has been fulfilled'
-            email_body = """To be sent to """ + ticketrequester_email + """
-            Your Job ticket number """ + str(chosen_ticket_id) + """ has been fulfilled by """ + username + """".
+            email_body = """To be sent to """ + ticketrequester_email + """\n
+            Your Job ticket number """ + str(chosen_ticket_id) + """ has been fulfilled by """ + username + """".\n
             
              Ticket Description: """ + ticketDesc + """"
 
@@ -424,19 +425,16 @@ def editTicket(chosen_ticket_id):
             with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=securitycont) as smtp:
                 smtp.login(email_source, password)
                 smtp.sendmail(email_source, email_list, email.as_string())
-                
-                
-                
-                
+
+            # look to add the update to the closed ticket table here
         team_id = request.form['team_id']
         priority = request.form['priority']
         environment = request.form['environment']
-        # assigned_to = request.form['assigned_to']
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.state: state})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.team_id: team_id})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.priority: priority})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.environment: environment})
-        # db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.assigned_to: assigned_to})
+
         db.session.commit()
         return redirect('/opentickets')
 
@@ -454,7 +452,8 @@ def closedTickets():
                     ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.
                     email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket.ticket_sp_instruction)\
                     .join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
-                    user_id == User.user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state == 'Closed Incomplete'), Ticket.team_id == loggedteam)).all()
+                    user_id == User.user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
+                    'Closed Incomplete'), Ticket.team_id == loggedteam)).all()
 
     return render_template('closedTicket.html', closedTickets=closedTickets)
 
