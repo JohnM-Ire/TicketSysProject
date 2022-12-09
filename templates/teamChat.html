@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Team Chat</title>
 
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
+
 </head>
 
 <body>
@@ -31,32 +32,26 @@
 		</ul>
 	</header>
 	<h1>Welcome {{ username }}</h1>
-<div id = "teamchat_rightouter">
-     {% for comment in teamComments %}
-<!--	<br>-->
-<!--		<p>comm ID {{ comment.teamcomment_id }}</p>-->
-<!--		<p>UserID {{ comment.user_id }}</p>-->
-<!--		<p>TimeCreated {{ comment.timecreated }}</p>-->
-<!--		<p>User Name {{ comment.name }}</p>-->
-<!--		<p>Team ID {{ comment.team_id }}</p>-->
-	<br>
-        <p>{{ comment.name }} wrote: </p>
+	<div id = "teamchat_rightouter">
+    	{% for comment in teamComments %}
+			<br>
+    		<p>{{ comment.name }} wrote: </p>
 
-        <p>
-<!--			name ="comment" rows="20" cols="50"-->
-			{{ comment.comment }}</p>
-		 <p>{{ comment.timecreated }}</p>
-     {% endfor %}
-</div>
-<div id = "teamchat_leftouter">
+    		<p>{{ comment.comment }}</p>
+			<br>
+			<p>{{ comment.timecreated }}</p>
+		{% endfor %}
+	</div>
+	<div id = "teamchat_leftouter">
 
-<form id="comment-form" action='' method = "POST">
-		<p>Enter Comments: </p>
-        <label for="comment"></label>
-        <textarea name = "comment" rows="15" cols="50"></textarea>
-		<input type = "submit" value = "Add Comment" id="commentButton">
-	</form>
-</div>
+		<form id="comment-form" action='' method = "POST">
+			<p>Enter Comments: </p>
+    		<label for="comment"></label>
+    		<textarea name = "comment" rows="15" cols="50"></textarea>
+				<input type = "submit" value = "Add Comment" id="commentButton">
+		</form>
+
+	</div>
 
 
 </div>
