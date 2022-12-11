@@ -32,14 +32,14 @@
 	</header>
 
 	<div class="ticket_title">
-    <h2>Open Tickets</h2>
-    <p><a href="/closedtickets">View Closed Tickets here</a></p>
+		<h2>Open Tickets</h2>
+    	<p><a href="/closedtickets">View Closed Tickets here</a></p>
 	</div>
 	<div id="opentick_table" style="overflow-x: auto;">
 
        {% for openticket in openTickets %}
 <!--		<a href="/ticket/{{ openticket.ticket_id }}">-->
-        <table id="hometable">
+        <table id="tickettable">
 			<tr id="tableheader">
 
 				<td id="tdlarge">Summary</td>
@@ -66,14 +66,16 @@
 
 		{% endfor %}
 	</div>
+
 	<div class="ticket_title">
         <h2 id = "anchor_progress">In-Progress Tickets</h2>
 	</div>
+
 	<div id="opentick_table" style="overflow-x: auto;">
 
 		{% for progTicket in progTickets %}
         <a href="/ticket/{{ progTicket.ticket_id }}">
-        <table id="hometable">
+        <table id="tickettable">
 			<tr id="tableheader">
 
 				<td>Ticket Number</td>
@@ -89,7 +91,7 @@
 				<td> {{ progTicket.ticket_created }}</td>
                 <td> {{ progTicket.priority }}</td>
 				<td>{{ progTicket.state }}</td>
-                <td>{{ progTicket.user_id }}, {{ progTicket.name }}</td>
+                <td>{{ progTicket.name }}</td>
 				<td>{{ progTicket.team_name }}</td>
 				<td id="tdlarge">{{ progTicket.summary }}</td>
 			</tr>
@@ -97,14 +99,16 @@
 			 </a>
 		    	{% endfor %}
 	</div>
+
 	<div class="ticket_title">
-	<h2 id = "anchor_waiting">Waiting Tickets</h2>
+		<h2 id = "anchor_waiting">Waiting Tickets</h2>
 	</div>
+
 	<div id="opentick_table" style="overflow-x: auto;">
-      {% for waitTicket in waitTickets %}
+		{% for waitTicket in waitTickets %}
 
         <a href="/ticket/{{ waitTicket.ticket_id }}">
-        <table id="hometable">
+        <table id="tickettable">
 			<tr id="tableheader">
 
 				<td>Ticket Number</td>
@@ -120,45 +124,47 @@
 				<td> {{ waitTicket.ticket_created }}</td>
                 <td> {{ waitTicket.priority }}</td>
 				<td>{{ waitTicket.state }}</td>
-                <td>{{ waitTicket.user_id }}, {{ waitTicket.name }}</td>
+                <td>{{ waitTicket.name }}</td>
 				<td>{{ waitTicket.team_name }}</td>
 				<td id="tdlarge">{{ waitTicket.summary }}</td>
 			</tr>
 		</table>
-    {% endfor %}
-</div>
-	<div class="ticket_title">
-            <h2 id = "anchor_myTickets">My Tickets</h2>
+    	{% endfor %}
 	</div>
-<div id="opentick_table" style="overflow-x: auto;">
 
-           {% for myTicket in myTickets %}
+	<div class="ticket_title">
+		<h2 id = "anchor_myTickets">My Tickets</h2>
+	</div>
 
-        <a href="/ticket/{{ myTicket.ticket_id }}">
-        <table id="hometable">
-			<tr id="tableheader">
+	<div id="opentick_table" style="overflow-x: auto;">
 
-				<td>Ticket Number</td>
-                <td>Ticket Create date</td>
-				<td>Priority</td>
-				<td>Ticket State</td>
-                <td>Requested by</td>
-				<td>Assigned to Team</td>
-				<td id="tdlarge">Summary</td>
-			</tr>
-			<tr>
-				<td>{{ myTicket.ticket_id }}</td>
-				<td> {{ myTicket.ticket_created }}</td>
-                <td> {{ myTicket.priority }}</td>
-				<td>{{ myTicket.state }}</td>
-                <td>{{ myTicket.user_id }}, {{ myTicket.name }}</td>
-				<td>{{ myTicket.team_name }}</td>
-				<td id="tdlarge">{{ myTicket.summary }}</td>
-			</tr>
-		</table>
+		{% for myTicket in myTickets %}
+
+		<a href="/ticket/{{ myTicket.ticket_id }}">
+			<table id="tickettable">
+				<tr id="tableheader">
+					<td>Ticket Number</td>
+					<td>Ticket Create date</td>
+					<td>Priority</td>
+					<td>Ticket State</td>
+					<td>Requested by</td>
+					<td>Assigned to Team</td>
+					<td id="tdlarge">Summary</td>
+				</tr>
+				<tr>
+					<td>{{ myTicket.ticket_id }}</td>
+					<td> {{ myTicket.ticket_created }}</td>
+					<td> {{ myTicket.priority }}</td>
+					<td>{{ myTicket.state }}</td>
+					<td>{{ myTicket.name }}</td>
+					<td>{{ myTicket.team_name }}</td>
+					<td id="tdlarge">{{ myTicket.summary }}</td>
+				</tr>
+			</table>
 		</a>
-        {% endfor %}
-</div>
+		{% endfor %}
+	</div>
+
 </div>
 
 

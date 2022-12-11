@@ -118,6 +118,7 @@ footer{
 	width: 100%;
 	border: 2px solid aqua;
 	border-collapse: collapse;
+	table-layout: fixed;
 	text-align: center;
 
 }
@@ -322,7 +323,7 @@ td{
 	border-collapse: collapse;
 	border: 4px solid red;
 	border-radius: 25px;
-	display: inline-block;
+
 }
 
 #opentick_table tr:nth-child(even){
@@ -334,3 +335,14 @@ td{
 }
 
 
+#tickettable{
+	width: 100%;
+	border: 2px solid aqua;
+	border-collapse: collapse;
+	text-align: center;
+	table-layout: fixed;
+}
+#tickettable td{
+	width: 14.285%;
+  overflow: hidden;
+}
