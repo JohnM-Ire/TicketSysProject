@@ -31,31 +31,39 @@
 			</a>
 		</ul>
 	</header>
+	<div id="chat_outer">
 	<h1>Welcome {{ username }}</h1>
-	<div id = "teamchat_rightouter">
-    	{% for comment in teamComments %}
-			<br>
-    		<p>{{ comment.name }} wrote: </p>
+		<h2>Team Chat page</h2>
 
-    		<p>{{ comment.comment }}</p>
-			<br>
-			<p>{{ comment.timecreated }}</p>
-		{% endfor %}
-	</div>
+
 	<div id = "teamchat_leftouter">
-
 		<form id="comment-form" action='' method = "POST">
-			<p>Enter Comments: </p>
-    		<label for="comment"></label>
-    		<textarea name = "comment" rows="15" cols="50"></textarea>
-				<input type = "submit" value = "Add Comment" id="commentButton">
+
+		<div id="entercomment_bubble">
+	   		<label for="comment"></label>
+    		<textarea name = "comment" id="enter_comment_box" placeholder="Enter comment here .."></textarea>
+		</div>
+
+		<input type = "submit" value = "Add Comment" id="comment_button">
 		</form>
 
 	</div>
+	<div id = "teamchat_rightouter">
+    	{% for comment in teamComments %}
+		<div id="comment_bubble">
+    		<p>{{ comment.name }} wrote: </p><br>
+    		<p>{{ comment.comment }}</p>
+			<br>
+			<p>{{ comment.timecreated }}</p>
+		</div>
+
+		{% endfor %}
+	</div>
+
 
 
 </div>
-
+</div>
 <footer>
 	<p>John Murphy | &copy; 2022</p>
 

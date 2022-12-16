@@ -30,64 +30,66 @@
 		</ul>
 	</header>
 
- <p>Create New Ticket</p><br>
-         <form id="user-form" action='' method = "POST">
-
-                <p>Ticket Description</p>
-                <label for="description"></label>
-             <textarea name = "description" rows="15" cols="50"></textarea>
-<!--                <input type = "textarea" name = "description" class="user-input"><br>-->
-
-                <p>Assign job to Team</p>
-                <select name="team_id" class="select-boxes">
-                      {% for t in teamList %}
-                      <option value={{ t.team_id }}>{{ t.team_name }}</option>
-                      {% endfor %}
-                </select>
-                <label for="team_id"></label>
-                <p>Contact Number</p>
+    <div id="newtick_holder">
+        <p>Create New Ticket</p>
+        <form id="user-form" action='' method = "POST">
+            <div id="tick_topleft">
                 <label for="contact_num"></label>
-                <input type = "text" name = "contact_num" class="user-input"><br>
+                <textarea id="text_contact" name = "contact_num" placeholder="Enter an optional contact number " class="user-input"></textarea>
+            </div>
+            <div id="tick_topright">
+                <p>Assign job to Team</p>
+                <label for="team_id"></label>
+                <select name="team_id" class="tick_select-boxes">
+                    {% for t in teamList %}
+                    <option value={{ t.team_id }}>{{ t.team_name }}</option>
+                    {% endfor %}
+                </select>
+
                 <p>Priority</p>
                 <label for="priority"></label>
-                <select name="priority"  class="select-boxes">
-                           <option value="1">1 - Low</option>
-                           <option value="2">2 - Moderate</option>
-                           <option value="3">3 - High</option>
-                           <option value="4">4 - Critical</option>
+                <select name="priority"  class="tick_select-boxes">
+                    <option value="1">1 - Low</option>
+                    <option value="2">2 - Moderate</option>
+                    <option value="3">3 - High</option>
+                    <option value="4">4 - Critical</option>
                 </select>
+
+                <p>Environment</p>
+                <label for="environment"></label>
+                <select name="environment"  class="tick_select-boxes">
+                    <option value="DEV">Development</option>
+                    <option value="QA">Quality Assurance</option>
+                    <option value="REL">Release</option>
+                    <option value="PROD">Production</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div id="tick_summaryholder">
                 <p>Summary </p>
                 <label for="summary"></label>
-             <textarea name = "summary" rows="5" cols="50"></textarea>
-                <p>Environment</p>
-               <label for="environment"></label>
-                       <select name="environment"  class="select-boxes">
-                           <option value="DEV">Development</option>
-                           <option value="QA">Quality Assurance</option>
-                           <option value="REL">Release</option>
-                           <option value="PROD">Production</option>
-                           <option value="Other">Other</option>
-                       </select>
-
+                <textarea name = "summary" id="text_summary"  placeholder="Enter a short summary of the ticket task (approx 10 words).."></textarea>
+            </div>
+            <div id="tick_descholder">
+                <p>Ticket Description</p>
+                <label for="description"></label>
+                <textarea name = "description" id="text_desc"  placeholder="Enter the steps to be taken to complete this ticket"></textarea>
+            </div>
+            <div id="tick_specialint">
                 <p>Special Instructions </p>
                 <label for="ticket_sp_instruction"></label>
-             <textarea name = "ticket_sp_instruction" rows="10" cols="50"></textarea><br>
-
-<!--                <p>Assign job to :</p>-->
-<!--                <select name="assigned_to" class="select-boxes">-->
-<!--                      {% for t in teamList %}-->
-<!--                      <option value={{ t.team_id }}>{{ t.team_name }}</option>-->
-<!--                      {% endfor %}-->
-
-
-
-             <input type = "submit" value = "Create Ticket" id="userButton">
-         </form>
+                <textarea name = "ticket_sp_instruction" id="text_specialint" placeholder="Any extra steps or notes you wish the add "></textarea>
+            </div>
+            <div id="tick_buttoholder">
+            <input type = "submit" value = "Create Ticket" id="ticketButton">
+            </div>
+        </form>
+    </div>
 </div>
-    <footer>
-	    <p>John Murphy | &copy; 2022</p>
+<footer>
+    <p>John Murphy | &copy; 2022</p>
 
-    </footer>
+</footer>
 
 </body>
 
