@@ -29,52 +29,115 @@
 			</a>
 		</ul>
 	</header>
-{% for ticket in ticketinfo %}
-<a href="/editticket/{{ ticket.ticket_id }}"><button>Update Ticket</button></a>
+<!--{% for ticket in ticketinfo %}-->
+<!--<a href="/editticket/{{ ticket.ticket_id }}"><button>Update Ticket</button></a>-->
 
-                <p>Requester's ID: {{ ticket.user_id }} {{ ticket.name }}<p>
-              <p>Contact Number : {{ ticket.contact_num }}</p>
+<!--                <p>Requester's ID: {{ ticket.user_id }} {{ ticket.name }}<p>-->
+<!--              <p>Contact Number : {{ ticket.contact_num }}</p>-->
 
-                <p>Ticket Description: </p>
-                <label for="description"></label>
-             <textarea readonly name = "description" rows="15" cols="50">{{ticket.description}}</textarea>
+<!--                <p>Ticket Description: </p>-->
+<!--                <label for="description"></label>-->
+<!--             <textarea readonly name = "description" rows="15" cols="50">{{ticket.description}}</textarea>-->
+
+<!--                <p>State: {{ ticket.state }}</p>-->
+<!--               <label for="team_id"></label>-->
+<!--                <p>Assigned job to Team: {{ ticket.team_name }}</p>-->
+
+<!--                <label for="priority"></label>-->
+<!--                <p>Priority: {{ ticket.priority }}</p>-->
+<!--                <label for= "summary"></label>-->
+<!--     <p>Summary:</p>-->
+<!--             <textarea readonly name = "summary" rows="5" cols="50">{{ticket.summary}}</textarea>-->
+<!--     <label for="environment"></label>-->
+<!--                <p>Environment: {{ ticket.environment }}</p>-->
+
+<!--                <p>Special Instructions </p>-->
+<!--                <label for="ticket_sp_instruction"></label>-->
+<!--             <textarea readonly name = "ticket_sp_instruction" rows="10" cols="50" >{{ ticket.ticket_sp_instruction }}</textarea><br>-->
+
+<!--&lt;!&ndash;                <label for="assigned_to"></label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <p>Ticket assigned to : {{ ticket.assigned_to }}</p>&ndash;&gt;-->
+
+<!--     <form id="comment-form" action='' method = "POST">-->
+
+<!--            <p>Enter Comments: </p>-->
+<!--            <label for="comment"></label>-->
+<!--            <textarea name = "comment" rows="15" cols="50"></textarea>-->
+
+<!--           <input type = "submit" value = "Add Comment" id="commentButton">-->
+<!--     </form>-->
+
+<!--     {% for comment in allComments %}-->
+<!--        <p>{{ comment.name }} : {{ comment.timecreated }}</p>-->
+
+<!--        <textarea name ="comment" rows="20" cols="50">{{ comment.comment }}</textarea>-->
+<!--     {% endfor %}-->
+
+<!--{% endfor %}-->
+<!--</div>-->
+    <div id="tick_outer_holder">
+    {% for ticket in ticketinfo %}
+    <div id="tick_holder">
+
+        <div id="tick_topleft">
+
+            <p>Requester's ID: {{ ticket.user_id }} {{ ticket.name }}<p>
+            <p>Contact Number : {{ ticket.contact_num }}</p>
+
+        </div>
+            <div id="tick_topright">
 
                 <p>State: {{ ticket.state }}</p>
-               <label for="team_id"></label>
-                <p>Assigned job to Team: {{ ticket.team_name }}</p>
-
-                <label for="priority"></label>
-                <p>Priority: {{ ticket.priority }}</p>
-                <label for= "summary"></label>
-     <p>Summary:</p>
-             <textarea readonly name = "summary" rows="5" cols="50">{{ticket.summary}}</textarea>
-     <label for="environment"></label>
                 <p>Environment: {{ ticket.environment }}</p>
+                <p>Assigned job to Team: {{ ticket.team_name }}</p>
+                <p>Priority: {{ ticket.priority }}</p>
 
+            </div>
+            <div id="tick_summaryholder">
+                <p>Summary </p>
+                <label for="summary"></label>
+                <textarea name = "summary" id="tick_text_summary" readonly>{{ticket.summary}}</textarea>
+            </div>
+            <div id="tick_descholder">
+                <p>Ticket Description</p>
+                <label for="description"></label>
+                <textarea name = "description" id="tick_text_desc" readonly >{{ticket.description}}</textarea>
+            </div>
+
+            <div id="tick_specialint">
                 <p>Special Instructions </p>
                 <label for="ticket_sp_instruction"></label>
-             <textarea readonly name = "ticket_sp_instruction" rows="10" cols="50" >{{ ticket.ticket_sp_instruction }}</textarea><br>
+                <textarea name = "ticket_sp_instruction" id="tick_text_specialint" readonly>{{ ticket.ticket_sp_instruction }}</textarea>
+            </div>
+            <div id="tick_buttoholder">
+                <a href="/editticket/{{ ticket.ticket_id }}"><button id="ticketButton">Update Ticket</button></a>
+            </div>
 
-<!--                <label for="assigned_to"></label>-->
-<!--                <p>Ticket assigned to : {{ ticket.assigned_to }}</p>-->
+    </div>
+    {% endfor %}
+    <div id="tick_comment_holder">
+        <form id="comment-form" action='' method = "POST">
+            <div id="tick_entercomment_bubble">
+	   		    <label for="comment"></label>
+    		    <textarea name = "comment" id="tick_enter_comment_box" placeholder="Enter comment here .."></textarea>
+		    </div>
+        <input type = "submit" value = "Add Comment" id="comment_button">
 
-     <form id="comment-form" action='' method = "POST">
+        </form>
 
-            <p>Enter Comments: </p>
-            <label for="comment"></label>
-            <textarea name = "comment" rows="15" cols="50"></textarea>
+        {% for comment in allComments %}
+            <div id="tick_comment_bubble">
+                <p>{{ comment.name }} wrote: </p><br>
+                <p>{{ comment.comment }}</p>
+                <br>
+                <p>{{ comment.timecreated }}</p>
+            </div>
+        {% endfor %}
 
-           <input type = "submit" value = "Add Comment" id="commentButton">
-     </form>
 
-     {% for comment in allComments %}
-        <p>{{ comment.name }} : {{ comment.timecreated }}</p>
-
-        <textarea name ="comment" rows="20" cols="50">{{ comment.comment }}</textarea>
-     {% endfor %}
-
-{% endfor %}
-</div>>
+    </div>
+</div>
+</div>
 <footer>
 	<p>John Murphy | &copy; 2022</p>
 

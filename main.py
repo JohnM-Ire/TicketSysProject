@@ -81,16 +81,17 @@ def home():
                                                    user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
                                                    'Closed Incomplete'), Ticket.team_id == loggedteam)).count()
 
-        # waitTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
-        #                                          .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-        #                                          Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
-        #                                          .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User,
-        #                                         Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
-        #                                         (Ticket.team_id == loggedteam)).count()
+        myClosedTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket.
+                                ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
+                                Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment,
+                                Ticket.ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
+                                user_id == User.user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
+                     'Closed Incomplete'), Ticket.user_id == user, Ticket.team_id != loggedteam)).count()
 
+        total_closed = int(closedTicketsCount) + int(myClosedTicketsCount)
         return render_template('home.html', user=user, openTickets=openTickets, openTicketsCount=openTicketsCount,
                                progTickets=progTickets, progTicketsCount=progTicketsCount,
-                               closedTicketsCount=closedTicketsCount, username=username)
+                               closedTicketsCount=closedTicketsCount, total_closed=total_closed, username=username)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -249,15 +250,59 @@ def teamChat():
         return redirect('/teamchat')
 
 
-@app.route('/teams/<int:chosen_id>')
+@app.route('/teams/<int:chosen_id>', methods=['GET', 'POST'])
 def Teaminfo(chosen_id):
+
+
     teaminfo = Team.query.filter_by(team_id=chosen_id).first()
     allMembers = User.query.with_entities(User.user_id, User.name, User.email, User.jobTitle).filter(User.team_id ==
                     chosen_id).all()
-    if teaminfo:
-        return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
-    return f"No Team with id {chosen_id} in system"
 
+    all_emails = User.query.with_entities(User.email).filter(User.team_id ==
+                    chosen_id).all()
+    groupemail_list = []
+    for email in all_emails:
+        email = str(email)
+        email = email.strip("[ ] , ', ( )")
+        groupemail_list.append(email)
+
+
+    # if teaminfo:
+    #     return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
+    # return f"No Team with id {chosen_id} in system"
+
+    if request.method == 'GET':
+        return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
+
+    if request.method == 'POST':
+        team_email_message = request.form['team_email_message']
+        if team_email_message == "":
+            return 'Please go back and enter your message'
+        user = session["user"]
+
+        username = User.query.with_entities(User.name).filter(User.user_id == user).all()
+        username = str(username)
+        username = username.strip("[ ] , ( ) '")
+        email_source = 'ticketsysJM@gmail.com'
+        password = 'nwggowjpxnhpgvcv'
+        email_list = ['johnamurphy0185@gmail.com', 'john.a.murphy.1989@gmail.com]']
+
+        email_subj = 'Team Message'
+        email_body = 'To be sent to ' + str(groupemail_list) + '\nMessage from ' + username + '\nMessage:\n' + team_email_message +\
+                     '\nThank you,\nTicket Sys Team'
+        email = EmailMessage()
+        email['From'] = email_source
+        email['To'] = ", ".join(email_list)
+        email['Subject'] = email_subj
+        email.set_content(email_body)
+
+        securitycont = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=securitycont) as smtp:
+            smtp.login(email_source, password)
+            smtp.sendmail(email_source, email_list, email.as_string())
+
+        return redirect(request.url)
 
 @app.route('/newticket', methods=['GET', 'POST'])
 def addNewTicket():
@@ -301,6 +346,9 @@ def allOpenTickets():
     loggedteam = User.query.with_entities(User.team_id).filter(User.user_id == user).all()
     loggedteam = str(loggedteam)
     loggedteam = loggedteam.strip("[ ] , ( )")
+    team_name = Team.query.with_entities(Team.team_name).filter(Team.team_id == loggedteam).all()
+    team_name = str(team_name)
+    team_name = team_name.strip("[ ] , ( ), '")
 
     openTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.
                     ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.
@@ -323,9 +371,12 @@ def allOpenTickets():
                     .ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User
                     .email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
                     .ticket_sp_instruction).join(Team, Ticket.team_id == Team.team_id).join(User, Ticket
-                    .user_id == User.user_id).filter(Ticket.user_id == user).all()
+                    .user_id == User.user_id).filter(and_(Ticket.user_id == user), (Ticket.state != 'Fulfilled'),
+                    (Ticket.state != 'Closed Incomplete')).all()
 
-    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, waitTickets=waitTickets, myTickets=myTickets)
+
+    return render_template('openTickets.html', openTickets=openTickets, progTickets=progTickets, waitTickets=waitTickets,
+                           myTickets=myTickets, team_name=team_name)
 
 
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
@@ -361,7 +412,9 @@ def viewTicket(chosen_ticket_id):
 
         db.session.add(newComment)
         db.session.commit()
-        return redirect('/opentickets')
+        return redirect(request.url)
+
+
 
 
 @app.route('/editticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
@@ -392,6 +445,7 @@ def editTicket(chosen_ticket_id):
     loggedteam = loggedteam.strip("[ ] , ( )")
 
     allMembers = User.query.with_entities(User.name).filter(User.team_id == loggedteam).all()
+    emails = [('john.a.murphy.1989@gmail.com',), ('johnamurphy0185@gmail.com',)]
 
     if request.method == 'GET':
         if ticketinfo:
@@ -406,14 +460,10 @@ def editTicket(chosen_ticket_id):
             email_list = 'johnamurphy0185@gmail.com'
 
             email_subj = 'Your Job ticket ' + str(chosen_ticket_id) + ' request has been fulfilled'
-            email_body = """To be sent to """ + ticketrequester_email + """\n
-            Your Job ticket number """ + str(chosen_ticket_id) + """ has been fulfilled by """ + username + """".\n
-            
-             Ticket Description: """ + ticketDesc + """"
+            email_body = 'To be sent to ' + ticketrequester_email + '\n\nYour Job ticket number '\
+                         + str(chosen_ticket_id) + ' has been fulfilled by ' + username + '.\n\nTicket Description:\n'\
+                         + ticketDesc + '\nThank you,\nTicket Sys Team.'
 
-            Thank you,
-            Ticket Sys Team.
-            """
             email = EmailMessage()
             email['From'] = email_source
             email['To'] = email_list
@@ -436,7 +486,7 @@ def editTicket(chosen_ticket_id):
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.environment: environment})
 
         db.session.commit()
-        return redirect('/opentickets')
+        return redirect(request.url)
 
 
 @app.route('/closedtickets')
@@ -448,14 +498,24 @@ def closedTickets():
     loggedteam = str(loggedteam)
     loggedteam = loggedteam.strip("[ ] , ( )")
 
+    team_name = Team.query.with_entities(Team.team_name).filter(Team.team_id == loggedteam).all()
+    team_name = str(team_name)
+    team_name = team_name.strip("[ ] , ( ), '")
+
     closedTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.
                     ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.
                     email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket.ticket_sp_instruction)\
                     .join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
                     user_id == User.user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
                     'Closed Incomplete'), Ticket.team_id == loggedteam)).all()
+    myClosedTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.
+                    ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.
+                    email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket.ticket_sp_instruction)\
+                    .join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
+                    user_id == User.user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
+                    'Closed Incomplete'), Ticket.user_id == user, Ticket.team_id != loggedteam)).all()
 
-    return render_template('closedTicket.html', closedTickets=closedTickets)
+    return render_template('closedTicket.html', closedTickets=closedTickets, myClosedTickets=myClosedTickets, team_name=team_name)
 
 
 if __name__ == '__main__':

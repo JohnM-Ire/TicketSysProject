@@ -30,40 +30,115 @@
 		</ul>
 	</header>
 
+	<div id="tickets_text_top">
+		<h2>{{ team_name }} Team Closed Tickets</h2>
+		<p>Tickets assigned to {{ team_name }} team classified as Fulfilled or Closed Incomplete.</p>
+	</div>
 
-    <h2>Closed Tickets</h2>
-    <p>Tickets assigned to {{ closedTickets.team_name }} team classified as Fulfilled or Closed Incomplete.</p>
-    <p>Select another team to view closed tickets they were assigned</p>
-<div style="width : 100%; background-color: greenyellow; height: auto">
-       {% for closedTicket in closedTickets %}
+	<div id="opentickets_holder">
+		<div class="ticket_title">
 
-    <a href="/ticket/{{ closedTicket.ticket_id }}">
-        <table id="hometable">
-			<tr id="tableheader">
+		</div>
+		<div id="opentick_table" style="overflow-x: auto;">
 
-				<td>Ticket Number</td>
-                <td>Ticket Create date</td>
-				<td>Priority</td>
-				<td>Ticket State</td>
-                <td>Requested by</td>
-				<td>Assigned to Team</td>
-				<td id="tdlarge">Summary</td>
-			</tr>
-			<tr>
-				<td>{{ closedTicket.ticket_id }}</td>
-				<td> {{ closedTicket.ticket_created }}</td>
-                <td> {{ closedTicket.priority }}</td>
-				<td>{{ closedTicket.state }}</td>
-                <td>{{ closedTicket.user_id }}, {{ closedTicket.name }}</td>
-				<td>{{ closedTicket.team_name }}</td>
-				<td id="tdlarge">{{ closedTicket.summary }}</td>
-			</tr>
-		</table>
-    </a>
-    {% endfor %}
+        	<table id="tickettable">
+				<tr id="tableheader">
+
+					<th id="tdlarge">Summary</th>
+					<th>Ticket Number</th>
+					<th>Ticket State</th>
+					<th>Ticket Create date</th>
+					<th>Priority</th>
+					<th>Requested by</th>
+					<th>Assigned to Team</th>
+
+				</tr>
+			</table>
+			  {% for closedTicket in closedTickets %}
+			 <a href="/ticket/{{ closedTicket.ticket_id }}">
+			<table id="tickettable">
+				<tr>
+					<td id="tdlarge">{{ closedTicket.summary }}</td>
+					<td>{{ closedTicket.ticket_id }}</td>
+					<td>{{ closedTicket.state }}</td>
+					<td> {{ closedTicket.ticket_created }}</td>
+					<td> {{ closedTicket.priority }}</td>
+					<td>{{ closedTicket.name }}</td>
+					<td>{{ closedTicket.team_name }}</td>
+
+				</tr>
+			</table>
+			</a>
+			{% endfor %}
+
+		</div>
+			<div id="tickets_text_top">
+		<h2>My Closed Tickets</h2>
+		<p>Tickets created by you and marked as 'Fulfilled' or 'Closed Incomplete' by other teams.</p>
+	</div>
+			<div id="opentick_table" style="overflow-x: auto;">
+
+        	<table id="tickettable">
+				<tr id="tableheader">
+
+					<th id="tdlarge">Summary</th>
+					<th>Ticket Number</th>
+					<th>Ticket State</th>
+					<th>Ticket Create date</th>
+					<th>Priority</th>
+					<th>Requested by</th>
+					<th>Assigned to Team</th>
+
+				</tr>
+			</table>
+			  {% for myClosedTicket in myClosedTickets %}
+			 <a href="/ticket/{{ myClosedTicket.ticket_id }}">
+			<table id="tickettable">
+				<tr>
+					<td id="tdlarge">{{ myClosedTicket.summary }}</td>
+					<td>{{ myClosedTicket.ticket_id }}</td>
+					<td>{{ myClosedTicket.state }}</td>
+					<td> {{ myClosedTicket.ticket_created }}</td>
+					<td> {{ myClosedTicket.priority }}</td>
+					<td>{{ myClosedTicket.name }}</td>
+					<td>{{ myClosedTicket.team_name }}</td>
+
+				</tr>
+			</table>
+			</a>
+			{% endfor %}
+
+		</div>
+<!--<div style="width : 100%; background-color: greenyellow; height: auto">-->
+<!--       {% for closedTicket in closedTickets %}-->
+
+<!--    <a href="/ticket/{{ closedTicket.ticket_id }}">-->
+<!--        <table id="hometable">-->
+<!--			<tr id="tableheader">-->
+
+<!--				<td>Ticket Number</td>-->
+<!--                <td>Ticket Create date</td>-->
+<!--				<td>Priority</td>-->
+<!--				<td>Ticket State</td>-->
+<!--                <td>Requested by</td>-->
+<!--				<td>Assigned to Team</td>-->
+<!--				<td id="tdlarge">Summary</td>-->
+<!--			</tr>-->
+<!--			<tr>-->
+<!--				<td>{{ closedTicket.ticket_id }}</td>-->
+<!--				<td> {{ closedTicket.ticket_created }}</td>-->
+<!--                <td> {{ closedTicket.priority }}</td>-->
+<!--				<td>{{ closedTicket.state }}</td>-->
+<!--                <td>{{ closedTicket.user_id }}, {{ closedTicket.name }}</td>-->
+<!--				<td>{{ closedTicket.team_name }}</td>-->
+<!--				<td id="tdlarge">{{ closedTicket.summary }}</td>-->
+<!--			</tr>-->
+<!--		</table>-->
+<!--    </a>-->
+<!--    {% endfor %}-->
+<!--</div>-->
 </div>
 </div>
-
 <footer>
 	<p>John Murphy | &copy; 2022</p>
 

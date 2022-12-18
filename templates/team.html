@@ -32,29 +32,66 @@
 
 
 
+	<div id="teampage_outer">
+
+		<div id="team_header">
+			<div id="team_header_in">
+				<h1> {{ teaminfo.team_name }} </h1>
+				<br>
+				<p id="mail_p">Team Id Number : {{ teaminfo.team_id }}</p>
+				<p id="mail_p">Team Category: {{teaminfo.team_category}}</p>
+			</div>
+		</div>
+
+			<div id="teampage_inner">
+				{% for member in allMembers %}
+					<div id="member_card">
+						<table id="employee_table" style="overflow-x:auto;">
+							<tr>
+								<td>Name</td>
+								<td>{{member.name}}</td>
+							</tr>
+							<tr>
+								<td>Employee ID</td>
+								<td>{{member.user_id}}</td>
+							</tr>
+							<tr>
+								<td>Email</td>
+								<td>{{member.email}}</td>
+							</tr>
+							<tr>
+								<td>Job Title</td>
+								<td>{{member.jobTitle}}</td>
+							</tr>
+						</table>
+
+					</div>
+
+				{% endfor %}
+			</div>
+	</div>
+	<div id="email_outer">
+		<div id="email_inner">
+			<div id="mail_message">
+				<p id="mail_p">Send a message to all members of the {{ teaminfo.team_name }} team </p>
+			</div>
+
+			<div id="mail_box"
+				<form id="email-form" action='' method = "POST">
+					<textarea name="team_email_message" id="email_text" placeholder="Enter your message here"></textarea>
+					  <input type = "submit" value = "Send message" id="send_email_button">
+				</form>
+			</div>
+		</div>
+
+	</div>
 
 
-
-        <h1> {{ teaminfo.team_name }} </h1>
-          <p class="info">Team ID :<b> {{ teaminfo.team_id }} </b></p>
-        <p>Team category: {{teaminfo.team_category}}</p>
-            <hr>
-            <br>
-   <h2>Team Members</h2>
- {% for member in allMembers %}
-
-        <p>Member Name: {{member.name}}</p>
-        <p>Member ID: {{member.user_id}}</p>
-        <p>Member Email: {{member.email}}</p>
-        <p>Member Job Title: {{member.jobTitle}}</p>
-
-            <hr>
-            <br>
-    {% endfor %}
 
 
 
 </div>
+
 <footer>
 	<p>John Murphy | &copy; 2022</p>
 

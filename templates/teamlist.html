@@ -29,14 +29,20 @@
 			</a>
 		</ul>
 	</header>
-<h1>All Registered Teams</h1>
-<p>Select a Team:</p><br>
 
-        {% for team in teams %}
-            <p><a href="/teams/{{team.team_id}}">{{ team.team_name }}</a></p><br>
-            <hr>
-            <br>
-        {% endfor %}
+	<div id="team_outer_container">
+
+		<h1>All Registered Teams</h1>
+		<p>Select a Team:</p>
+
+			<div id="team_link_holder">
+				{% for team in teams %}
+
+					<a href="/teams/{{team.team_id}}"><button id="team_link">{{ team.team_name }}</button></a>
+
+				{% endfor %}
+			</div>
+	</div>
 </div>
 <footer>
 	<p>John Murphy | &copy; 2022</p>
