@@ -123,6 +123,20 @@ footer{
 
 }
 
+#home-left-inner td{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#home-left-inner a{
+	text-decoration: none;
+}
+
+#home-left-inner a:hover{
+	text-decoration: underline;
+	background-color: #ffffff;
+}
+
 
 #tableheader{
 	text-align: center;
@@ -442,11 +456,13 @@ td{
 }
 
 /*TICKET PAGE*/
+
 #tick_outer_holder{
 	float: left;
 	width: 100%;
 	height: 100%;
 	background-color: #5f70a6;
+	box-sizing: border-box;
 }
 #tick_holder{
 	float: left;
@@ -557,6 +573,21 @@ td{
 	right: -20px;
 	top: 6px;
 }
+
+/*.page-up-holder{*/
+/*	float: right;*/
+/*	width:20px;*/
+/*	height: 20px;*/
+/*	overflow: hidden;*/
+/*	display: block;*/
+/*	box-sizing: border-box;*/
+/*}*/
+/*#arrow-up-img{*/
+/*	height: 100%;*/
+/*	width:auto;*/
+/*	object-fit: cover;*/
+/*}*/
+
 /*TEAM CHAT PAGE*/
 
 #chat_outer{
@@ -652,21 +683,22 @@ td{
 
 /*TICKETS PAGE*/
 
-.ticket_title{
-	float: left;
-	text-align: center;
-	margin: 15px;
-}
-.ticket_title span {
-
-}
-
 #opentickets_holder{
 	float: left;
 	width: 100%;
 	text-align: center;
+	box-sizing: border-box;
+}
 
-
+.ticket_title{
+	float: left;
+	width: 100%;
+	text-align: center;
+	padding: 15px;
+	margin-bottom: 10px;
+	background-color:#5f70a6;
+	color: #cccccc;
+	box-sizing: border-box;
 }
 
 #opentick_table{
@@ -679,16 +711,17 @@ td{
 	border-radius: 25px;
 	padding: 5px;
 
+
 }
 
 #opentick_table tr:nth-child(even){
 	background-color: green;
 }
+
 .ticket_title{
 	float: left;
 	width: 100%;
 }
-
 
 #tickettable{
 	width: 100%;
@@ -700,23 +733,46 @@ td{
 	text-align: center;
 	table-layout: fixed;
 }
+#opentick_table a{
+	text-decoration: none;
+}
+#opentick_table a:hover{
+	text-decoration: underline;
+	background-color: #ffffff;
+}
 #tickettable td{
 	width: 14.285%;
 	padding-top: 5px;
 	padding-bottom: 5px;
   	overflow: hidden;
 }
-
+#closed_ticket_holder{
+	float: left;
+	width: 100%;
+	padding: 15px;
+	background-color:#5f70a6;
+	color: #cccccc;
+	box-sizing: border-box;
+}
+#closed_ticket_holder a{
+	text-decoration: none;
+	color: #cccccc;
+}
+#closed_ticket_holder a:hover{
+	text-decoration: underline;
+	color: #ffffff;
+}
 /*CLOSED TICKETS*/
 
 #tickets_text_top{
 	float: left;
 	width: 100%;
 	text-align: center;
-	padding: 5px;
-	margin: 15px;
-
+	padding-top: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 	box-sizing: border-box;
+
 }
 
 #tickets_text_top_inner{
@@ -724,6 +780,7 @@ td{
 	width: 80%;
 	text-align: left;
 	padding: 5px;
+	box-sizing: border-box;
 
 }
 
@@ -737,7 +794,7 @@ td{
 
 #team_link_holder{
 	max-width: 50%;
-	height: auto;
+
 	margin: 0 auto;
 	justify-content: space-around;
 	box-sizing: border-box;
@@ -814,13 +871,11 @@ td{
 #email_outer{
 	float: left;
 	width: 100%;
-	height: auto;
 	box-sizing: border-box;
 }
 #email_inner{
 	margin: 0 auto;
 	width: 70%;
-	height: auto;
 	padding: 15px;
 	box-sizing: border-box;
 }
@@ -838,7 +893,9 @@ td{
 	width: 70%;
 	height: 300px;
 	text-align: center;
+	margin-bottom: 25px;
 	box-sizing: border-box;
+
 }
 #email_text{
 	margin: 0 auto;
@@ -848,15 +905,17 @@ td{
 	resize: none;
 	font-size: 18px;
 	padding: 10px;
+	box-sizing: border-box;
 
 }
 #send_email_button{
-	width: 40%;
+	float: left;
+	width: 100%;
 	font-size: 20px;
 	color: #ffffff;
 	padding: 14px 20px;
 	background: #5f70a6;
-	margin: 8px 0;
+	margin: 15px 0 ;
 	border: none;
 	border-radius: 10px;
 	cursor: pointer;

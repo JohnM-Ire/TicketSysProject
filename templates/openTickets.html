@@ -43,6 +43,7 @@
 		<div class="ticket_title">
 			<h2>Open Tickets</h2>
 		</div>
+
 		<div id="opentick_table" style="overflow-x: auto;">
 
 
@@ -89,14 +90,13 @@
 
 			<table id="tickettable">
 				<tr id="tableheader">
-
+					<th id="tdlarge">Summary</th>
 					<th>Ticket Number</th>
+					<th>Ticket State</th>
 					<th>Ticket Create date</th>
 					<th>Priority</th>
-					<th>Ticket State</th>
 					<th>Requested by</th>
 					<th>Assigned to Team</th>
-					<th id="tdlarge">Summary</th>
 				</tr>
 
 			</table>
@@ -104,102 +104,97 @@
 			<a href="/ticket/{{ progTicket.ticket_id }}">
 			<table id="tickettable">
 				<tr>
+					<td id="tdlarge">{{ progTicket.summary }}</td>
 					<td>{{ progTicket.ticket_id }}</td>
+					<td>{{ progTicket.state }}</td>
 					<td> {{ progTicket.ticket_created }}</td>
 					<td> {{ progTicket.priority }}</td>
-					<td>{{ progTicket.state }}</td>
 					<td>{{ progTicket.name }}</td>
 					<td>{{ progTicket.team_name }}</td>
-					<td id="tdlarge">{{ progTicket.summary }}</td>
 				</tr>
 			</table>
 			</a>
 			{% endfor %}
+		</div>
 
+		<div class="ticket_title">
+			<h2 id = "anchor_waiting">Waiting Tickets</h2>
+		</div>
 
-	</div>
-
-	<div class="ticket_title">
-		<h2 id = "anchor_waiting">Waiting Tickets</h2>
-	</div>
-
-	<div id="opentick_table" style="overflow-x: auto;">
-
-        <table id="tickettable">
-			<tr id="tableheader">
-
-				<td>Ticket Number</td>
-                <td>Ticket Create date</td>
-				<td>Priority</td>
-				<td>Ticket State</td>
-                <td>Requested by</td>
-				<td>Assigned to Team</td>
-				<td id="tdlarge">Summary</td>
-			</tr>
-		</table>
-		{% for waitTicket in waitTickets %}
-		 <a href="/ticket/{{ waitTicket.ticket_id }}">
-		<table id="tickettable">
-			<tr>
-				<td>{{ waitTicket.ticket_id }}</td>
-				<td> {{ waitTicket.ticket_created }}</td>
-                <td> {{ waitTicket.priority }}</td>
-				<td>{{ waitTicket.state }}</td>
-                <td>{{ waitTicket.name }}</td>
-				<td>{{ waitTicket.team_name }}</td>
-				<td id="tdlarge">{{ waitTicket.summary }}</td>
-			</tr>
-		</table>
-		 </a>
-    	{% endfor %}
-	</div>
-
-	<div class="ticket_title">
-		<h2 id = "anchor_myTickets">My Tickets</h2>
-	</div>
-
-	<div id="opentick_table" style="overflow-x: auto;">
+		<div id="opentick_table" style="overflow-x: auto;">
 
 			<table id="tickettable">
 				<tr id="tableheader">
-					<td>Ticket Number</td>
-					<td>Ticket Create date</td>
-					<td>Priority</td>
-					<td>Ticket State</td>
-					<td>Requested by</td>
-					<td>Assigned to Team</td>
-					<td id="tdlarge">Summary</td>
+					<th id="tdlarge">Summary</th>
+					<th>Ticket Number</th>
+					<th>Ticket State</th>
+					<th>Ticket Create date</th>
+					<th>Priority</th>
+					<th>Requested by</th>
+					<th>Assigned to Team</th>
+				</tr>
+			</table>
+			{% for waitTicket in waitTickets %}
+			 <a href="/ticket/{{ waitTicket.ticket_id }}">
+			<table id="tickettable">
+				<tr>
+					<td id="tdlarge">{{ waitTicket.summary }}</td>
+					<td>{{ waitTicket.ticket_id }}</td>
+					<td>{{ waitTicket.state }}</td>
+					<td> {{ waitTicket.ticket_created }}</td>
+					<td> {{ waitTicket.priority }}</td>
+					<td>{{ waitTicket.name }}</td>
+					<td>{{ waitTicket.team_name }}</td>
+				</tr>
+			</table>
+			 </a>
+			{% endfor %}
+		</div>
+
+		<div class="ticket_title">
+			<h2 id = "anchor_myTickets">My Tickets</h2>
+		</div>
+
+		<div id="opentick_table" style="overflow-x: auto;">
+
+			<table id="tickettable">
+				<tr id="tableheader">
+					<th id="tdlarge">Summary</th>
+					<th>Ticket Number</th>
+					<th>Ticket State</th>
+					<th>Ticket Create date</th>
+					<th>Priority</th>
+					<th>Requested by</th>
+					<th>Assigned to Team</th>
 				</tr>
 			</table>
 
-		{% for myTicket in myTickets %}
-		<a href="/ticket/{{ myTicket.ticket_id }}">
-			<table id="tickettable">
-				<tr>
-					<td>{{ myTicket.ticket_id }}</td>
-					<td> {{ myTicket.ticket_created }}</td>
-					<td> {{ myTicket.priority }}</td>
-					<td>{{ myTicket.state }}</td>
-					<td>{{ myTicket.name }}</td>
-					<td>{{ myTicket.team_name }}</td>
-					<td id="tdlarge">{{ myTicket.summary }}</td>
-				</tr>
-			</table>
-		</a>
-		{% endfor %}
-	</div>
-		  	<h2><a href="/closedtickets">Closed Tickets</a></h2>
+			{% for myTicket in myTickets %}
+			<a href="/ticket/{{ myTicket.ticket_id }}">
+				<table id="tickettable">
+					<tr>
+						<td id="tdlarge">{{ myTicket.summary }}</td>
+						<td>{{ myTicket.ticket_id }}</td>
+						<td>{{ myTicket.state }}</td>
+						<td> {{ myTicket.ticket_created }}</td>
+						<td> {{ myTicket.priority }}</td>
+						<td>{{ myTicket.name }}</td>
+						<td>{{ myTicket.team_name }}</td>
+					</tr>
+				</table>
+			</a>
+			{% endfor %}
+
+		</div>
+		<div id="closed_ticket_holder">
+			<h2><a href="/closedtickets">Closed Tickets</a></h2>
+		</div>
 	</div>
 </div>
 
-
 <footer>
 	<p>John Murphy | &copy; 2022</p>
-
 </footer>
-
-
-
 
 </body>
 </html>

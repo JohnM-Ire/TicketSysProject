@@ -38,55 +38,69 @@
 		<hr class="enquiry-hr">
 		<div id="home-left-inner">
 			<a href="/opentickets"><h3  class="enquiry-h3">Open Tickets</h3></a>
-			 {% for openticket in openTickets %}
+			<table id="hometable">
+				<tr id="tableheader">
 
-    	<a href="/ticket/{{ openticket.ticket_id }}">
-		<table id="hometable">
-			<tr id="tableheader">
-				<td>Ticket Number</td>
-				<td>Priority</td>
-				<td>Ticket State</td>
-				<td>Assigned to Team</td>
-				<td id="tdlarge">Summary</td>
-			</tr>
-			<tr>
-				<td>{{ openticket.ticket_id }}</td>
-				<td> {{ openticket.priority }}</td>
-				<td>{{ openticket.state }}</td>
-				<td>{{ openticket.team_name }}</td>
-				<td id="tdlarge">{{ openticket.summary }}</td>
-			</tr>
-		</table>
+					<th id="tdlarge">Summary</th>
+					<th>Ticket Number</th>
+					<th>Ticket State</th>
+					<th>Ticket Create date</th>
+					<th>Priority</th>
+					<th>Requested by</th>
+					<th>Assigned to Team</th>
 
-    {% endfor %}
+				</tr>
+			</table>
+			{% for openticket in openTickets %}
+			<a href="/ticket/{{ openticket.ticket_id }}">
+			<table id="hometable">
+				<tr>
+					<td id="tdlarge">{{ openticket.summary }}</td>
+					<td>{{ openticket.ticket_id }}</td>
+					<td>{{ openticket.state }}</td>
+					<td>{{ openticket.ticket_created }}</td>
+					<td>{{ openticket.priority }}</td>
+					<td>{{ openticket.name }}</td>
+					<td>{{ openticket.team_name }}</td>
+
+				</tr>
+			</table>
+			</a>
+			{% endfor %}
 			<br><a href="/opentickets"><p style="text-align: center;">Currently {{ openTicketsCount }} Open Tickets</p></a>
 
 		</div>
-				<div id="home-left-inner">
-				<a href="/opentickets#anchor_progress"><h3  class="enquiry-h3">In Progress Tickets</h3></a>
-				{% for progTicket in progTickets %}
-		        <a href="/ticket/{{ progTicket.ticket_id }}">
-		<table id="hometable">
+		<div id="home-left-inner">
+			<a href="/opentickets#anchor_progress"><h3  class="enquiry-h3">In Progress Tickets</h3></a>
 
-			<tr id="tableheader">
-				<td>Ticket Number</td>
-				<td>Priority</td>
-				<td>Ticket State</td>
-				<td>Assigned to Team</td>
-				<td id="tdlarge">Summary</td>
-			</tr>
+			<table id="hometable">
+				<tr id="tableheader">
 
-			<tr>
-				<td>{{ progTicket.ticket_id }}</td>
-				<td> {{ progTicket.priority }}</td>
-				<td>{{ progTicket.state }}</td>
-				<td>{{ progTicket.team_name }}</td>
-				<td id="tdlarge">{{ progTicket.summary }}</td>
-			</tr>
-		</table>
-				</a>
+					<th>Ticket Number</th>
+					<th>Ticket Create date</th>
+					<th>Priority</th>
+					<th>Ticket State</th>
+					<th>Requested by</th>
+					<th>Assigned to Team</th>
+					<th id="tdlarge">Summary</th>
+				</tr>
 
-  			{% endfor %}
+			</table>
+			{% for progTicket in progTickets %}
+			<a href="/ticket/{{ progTicket.ticket_id }}">
+			<table id="hometable">
+				<tr>
+					<td>{{ progTicket.ticket_id }}</td>
+					<td> {{ progTicket.ticket_created }}</td>
+					<td> {{ progTicket.priority }}</td>
+					<td>{{ progTicket.state }}</td>
+					<td>{{ progTicket.name }}</td>
+					<td>{{ progTicket.team_name }}</td>
+					<td id="tdlarge">{{ progTicket.summary }}</td>
+				</tr>
+			</table>
+			</a>
+			{% endfor %}
 					<br><a href="/opentickets#anchor_progress"><p style="text-align: center;">Currently {{ progTicketsCount }} in progress tickets</p></a>
 		</div>
 <!--				<div id="home-left-inner">-->

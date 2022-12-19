@@ -486,7 +486,7 @@ def editTicket(chosen_ticket_id):
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.environment: environment})
 
         db.session.commit()
-        return redirect(request.url)
+        return redirect('/opentickets')
 
 
 @app.route('/closedtickets')
