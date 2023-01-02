@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, sessions
 from sqlalchemy.sql import select, alias, desc, or_, and_
-
+from datetime import datetime
 import ssl
 from email.message import EmailMessage
 import smtplib
@@ -10,21 +10,18 @@ from TicketDB import db, User, Team, Ticket, TComment, TeamChat
 import itertools
 import jinja2
 
-app = Flask(__name__)
+app = Flask(__name__) # creates a Flask instance in your main module
 app.secret_key = "bbrm36hy"
 
 # app.config['SECRET_KEY'] = "JohnKey"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jMovie.db'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TicketDB.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jMovie.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
 @app.before_first_request
 def create_table():
-    # db.session.query(Ticket).delete()
-    # db.session.commit()
-    # db.drop_all()
     db.create_all()
 
 
@@ -115,7 +112,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop("user", None)
+    session.pop("user", None) #removes specified key and returns the corresponding value.
     return redirect('/login')
 
 
@@ -127,7 +124,7 @@ def addUser():
         return render_template('addUser.html', teams=teams)
 
     if request.method == 'POST':
-        username = "n/a"
+        username = ("user" + request.form['name'] + "d" + str(datetime.now()))
         name = request.form['name']
         email = request.form['email']
         jobTitle = request.form['jobTitle']
@@ -146,7 +143,7 @@ def addUser():
                            tasksComplete=tasksComplete, team_id=team_id)
 
             db.session.add(newuser)
-            db.session.commit()
+            db.session.commit() # writes changes to the database
             return redirect('/login')
 
 @app.route('/deluser/<int:user_id>', methods=['GET', 'POST'])
@@ -155,7 +152,7 @@ def DeleteSingleUser(user_id):
     if request.method == 'POST':
         if user:
             db.session.delete(user)
-            db.session.commit()
+            db.session.commit()     # writes changes to the database
             return redirect('/admin_data')
 
     return render_template('deleteUser.html', user=user)
@@ -175,7 +172,7 @@ def addTeam():
         else:
             newTeam = Team(team_name=team_name, team_category=team_category)
             db.session.add(newTeam)
-            db.session.commit()
+            db.session.commit()     # writes changes to the database
             return redirect('/admin_data')
 
 # NEED TO ACCOUNT FOR IF WE DELETE A TEAM WHAT HAPPENS TO THE USERS ASSIGNED TO THOSE TEAMS
@@ -245,8 +242,9 @@ def teamChat():
         else:
             newTeamComment = TeamChat(user_id=user_id, team_id=team_id, comment=comment)
 
+
         db.session.add(newTeamComment)
-        db.session.commit()
+        db.session.commit()     # writes changes to the database
         return redirect('/teamchat')
 
 
@@ -324,7 +322,6 @@ def addNewTicket():
         summary = request.form['summary']
         environment = request.form['environment']
         ticket_sp_instruction = request.form['ticket_sp_instruction']
-        # assigned_to = "unassigned"
 
         if user_id == "" or description == "" or team_id == "":
             return 'Please go back and enter values for fields'
@@ -334,7 +331,7 @@ def addNewTicket():
                            priority=priority, summary=summary, environment=environment, ticket_sp_instruction=ticket_sp_instruction)
 
             db.session.add(newTickets)
-            db.session.commit()
+            db.session.commit()     # writes changes to the database
             return redirect('/opentickets')
 
 
@@ -411,7 +408,7 @@ def viewTicket(chosen_ticket_id):
             newComment = TComment(comment=comment, user_id=user_id, ticket_id=ticket_id)
 
         db.session.add(newComment)
-        db.session.commit()
+        db.session.commit()     # writes changes to the database
         return redirect(request.url)
 
 
@@ -476,7 +473,7 @@ def editTicket(chosen_ticket_id):
                 smtp.login(email_source, password)
                 smtp.sendmail(email_source, email_list, email.as_string())
 
-            # look to add the update to the closed ticket table here
+
         team_id = request.form['team_id']
         priority = request.form['priority']
         environment = request.form['environment']
@@ -485,7 +482,7 @@ def editTicket(chosen_ticket_id):
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.priority: priority})
         db.session.query(Ticket).filter(Ticket.ticket_id == chosen_ticket_id).update({Ticket.environment: environment})
 
-        db.session.commit()
+        db.session.commit()     # writes changes to the database
         return redirect('/opentickets')
 
 

@@ -3,28 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
 </head>
 <body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Create new team</h1>
- <p>Enter the new team info below</p><br>
-         <form id="team-form" action='' method = "POST">
-                <p>Enter Team Name</p>
-                <label for="team_name"></label>
-                <input type = "text" name = "team_name" class="team-input">
-                <p>Enter Team category</p>
-                <label for="team_category"></label>
-                <input type = "text" name = "team_category" class="team-input"><br>
-                <input type = "submit" value = "Create Team" id="teamButton">
-         </form>
 
-</body>
-</html>
+<div id="wrapper">
+
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
+    <div id="newTeam-container">
+        <div id="newTeam-formholder">
+            <h1>Create a new team</h1>
+             <p>Please enter the new team info below</p><br>
+                     <form id="user-form" action='' method = "POST">
+                            <p>Team Name</p>
+                            <label for="team_name"></label>
+                            <input type = "text" name = "team_name" class="user-input">
+                            <p>Team Category</p>
+                            <label for="team_category"></label>
+                            <input type = "text" name = "team_category" class="user-input"><br>
+                            <input type = "submit" value = "Create Team" id="teamButton">
+                     </form>
+        </div>
+    </div>
+</div>
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
 </body>
 </html>

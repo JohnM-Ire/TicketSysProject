@@ -83,6 +83,14 @@ footer{
 }
 
 /*HOME*/
+
+#home_welcome{
+	float: left;
+	width: 70%;
+	padding-top: 20px;
+	padding-left: 30px;
+	padding-bottom: 25px;
+}
 #home-left-outer{
 	float: left;
 	width: 60%;
@@ -116,10 +124,11 @@ footer{
 
 #hometable{
 	width: 100%;
-	border: 2px solid aqua;
+	border: 2px solid #5f70a6;
 	border-collapse: collapse;
 	table-layout: fixed;
 	text-align: center;
+	background-color: whitesmoke;
 
 }
 
@@ -285,6 +294,9 @@ td{
 	color: white;
 	cursor: pointer;
 }
+#login_content a:hover{
+	text-decoration: underline;
+}
 .login_images{
 	width: 70%;
 	height: auto;
@@ -372,6 +384,9 @@ td{
 	font-size: 20px;
 	background-color: #f8f8f8;
 
+}
+.tick_select-boxes:hover{
+	cursor: pointer;
 }
 
 #tick_summaryholder{
@@ -919,4 +934,87 @@ td{
 	border: none;
 	border-radius: 10px;
 	cursor: pointer;
+}
+
+/*NEW TEAM PAGE*/
+#newTeam-container{
+	float: left;
+	width: 100%;
+	padding-top: 50px;
+
+}
+#newTeam-formholder{
+	width: 40%;
+	margin: 0 auto;
+	border-radius: 20px;
+	background-color: #C96F28;
+	padding: 30px;
+	box-sizing: border-box;
+	text-align: center;
+}
+#teamButton{
+	width: 80%;
+	background-color: #5f70a6;
+	color: white;
+	font-size: 24px;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+}
+#teamButton:hover{
+	opacity: .75;
+}
+
+/*ADMIN*/
+#admin_header{
+	float: left;
+	width: 100%;
+	background: #5f70a6;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	padding: 10px;
+	box-sizing: border-box;
+
+}
+#admin_outer_holder{
+	float: left;
+	width: 100%;
+	box-sizing: border-box;
+}
+#admin_table_holder{
+	width: 80%;
+
+	margin: 0 auto;
+	box-sizing: border-box;
+	text-align: center;
+}
+#user_square{
+	float: left;
+	width: 30%;
+	padding: 15px;
+	box-sizing: border-box;
+}
+#team_list{
+	text-align: center;
+}
+#delUser_Button{
+	width: 80%;
+	background-color: #5f70a6;
+	color: white;
+	font-size: 24px;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+}
+#delUser_Button a{
+	text-decoration: none;
+	color: white;
+}
+#delUser_Button:hover{
+	border: 2px solid #f8f8f8;
 }

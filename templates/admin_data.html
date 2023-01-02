@@ -37,40 +37,46 @@
 		</ul>
 	</header>
 
+    <div id="admin_header">
+        <h1 style="margin: 40px;"><u>All Registered Users</u></h1>
+    </div>
+    <div id="admin_outer_holder">
+        <div id="admin_table_holder">
 
-  <h1 style="margin: 40px;"><u>All Registered Users</u></h1>
+               {% for user in users %}
+                <div id="user_square">
+
+                    <p class="info">UserID :<b> {{ user.user_id }} </b></p>
+                    <p class="info">Name :<b> {{ user.name }} </b></p>
+<!--                    <p class="info">Username :<b> {{ user.username }} </b></p>-->
+                    <p class="info">Email:<b> {{ user.email }} </b></p>
+                    <p class="info">Job Title :<b> {{ user.jobTitle }} </b></p>
+                    <p>Assigned to Team ID: <b>{{ user.team_id }}</b></p>
+                    <p class="info">Password :<b> {{ user.password }} </b></p>
+                    <p class="info">Date Created :<b> {{ user.dateCreated }} </b></p>
+                    <p class="info">Tasks Complete :<b> {{ user.tasksComplete }} </b></p>
+                    <a href="/deluser/{{user.user_id}}"><button type="button" name="delUserButton" >Delete User</button></a><br>
+
+                    </div>
+               {% endfor %}
+        </div>
 
 
-       {% for user in users %}
+    </div>
+    <div id="admin_header">
+        <h1 style="margin: 40px;"><u>All Registered Teams</u></h1>
+    </div>
+    <div id="team_list">
+         {% for team in teams %}
 
-        <p class="info">UserID :<b> {{ user.user_id }} </b></p>
-        <p class="info">Username :<b> {{ user.username }} </b></p>
-        <p class="info">Name :<b> {{ user.name }} </b></p>
-        <p class="info">Email:<b> {{ user.email }} </b></p>
-        <p class="info">Job Title :<b> {{ user.jobTitle }} </b></p>
-        <p>Assigned to Team ID: <b>{{ user.team_id }}</b></p>
-        <p class="info">Password :<b> {{ user.password }} </b></p>
-        <p class="info">Date Created :<b> {{ user.dateCreated }} </b></p>
-        <p class="info">Tasks Complete :<b> {{ user.tasksComplete }} </b></p>
-     <a href="/deluser/{{user.user_id}}"><button type="button" name="delUserButton" >Delete User</button></a><br>
+            <p class="info">Team ID :<b> {{ team.team_id }} </b></p>
+            <p class="info">Team Name :<b> {{ team.team_name }}</b></p>
+            <p>Team category: {{team.team_category}}</p>
 
-
-            <hr>
-            <br>
-    {% endfor %}
-
-
- <h1 style="margin: 40px;"><u>All Registered Teams</u></h1>
-
-     {% for team in teams %}
-
-        <p class="info">Team ID :<b> {{ team.team_id }} </b></p>
-        <p class="info">Team Name :<b> {{ team.team_name }}</b></p>
-        <p>Team category: {{team.team_category}}</p>
-
-            <hr>
-            <br>
-    {% endfor %}
+                <hr>
+                <br>
+        {% endfor %}
+    </div>
 
 </div>
 <footer>

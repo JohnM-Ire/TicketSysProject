@@ -30,8 +30,9 @@
 			</a>
 		</ul>
 	</header>
+	<div id="home_welcome">
 			<h1>Welcome {{ username }}</h1>
-
+	</div>
 	<div id="home-left-outer">
 		<h3 class="enquiry-h3">Tickets assigned to your team</h3>
 		<hr class="enquiry-hr">
@@ -76,13 +77,14 @@
 			<table id="hometable">
 				<tr id="tableheader">
 
+					<th id="tdlarge">Summary</th>
 					<th>Ticket Number</th>
+					<th>Ticket State</th>
 					<th>Ticket Create date</th>
 					<th>Priority</th>
-					<th>Ticket State</th>
 					<th>Requested by</th>
 					<th>Assigned to Team</th>
-					<th id="tdlarge">Summary</th>
+
 				</tr>
 
 			</table>
@@ -90,13 +92,14 @@
 			<a href="/ticket/{{ progTicket.ticket_id }}">
 			<table id="hometable">
 				<tr>
+					<td id="tdlarge">{{ progTicket.summary }}</td>
 					<td>{{ progTicket.ticket_id }}</td>
+					<td>{{ progTicket.state }}</td>
 					<td> {{ progTicket.ticket_created }}</td>
 					<td> {{ progTicket.priority }}</td>
-					<td>{{ progTicket.state }}</td>
 					<td>{{ progTicket.name }}</td>
 					<td>{{ progTicket.team_name }}</td>
-					<td id="tdlarge">{{ progTicket.summary }}</td>
+
 				</tr>
 			</table>
 			</a>

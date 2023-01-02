@@ -21,7 +21,7 @@ class Team(db.Model):
 class User(db.Model):
     __tablename__ = "usertable"
     user_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    username = db.Column(db.String(50), unique=True)
+    username = db.Column(db.String(50))
     name = db.Column(db.String(50))
     email = db.Column(db.String(50), unique=True)
     jobTitle = db.Column(db.String(60))
@@ -30,7 +30,6 @@ class User(db.Model):
     tasksComplete = db.Column(db.Integer)
     team_id = db.Column(db.Integer, db.ForeignKey(Team.team_id))
     team_user = db.relationship("Team", backref='User')
-    # is_admin = db.Column(db.String(1))
 
     def __init__(self, username, name, email, jobTitle, password, tasksComplete, team_id):
         self.username = username
@@ -43,7 +42,7 @@ class User(db.Model):
 
 
     def __repr__(self):
-        return f"{self.username}:{self.username}"
+        return f"{self.user_id}:{self.user_id}"
 
 
 # Consider a Ticket update field, where when we update the ticket state, the current DAteTime() is entered/Updated
@@ -67,7 +66,6 @@ class Ticket(db.Model):
     summary = db.Column(db.String(80))
     environment = db.Column(db.String(50))
     ticket_sp_instruction = db.Column(db.String(200))
-    # assigned_to = db.Column(db.String(80), nullable=True, default="unassigned")
 
     def __init__(self, user_id, description, state, team_id, contact_num, priority, summary, environment, ticket_sp_instruction):
         self.user_id = user_id
@@ -78,8 +76,7 @@ class Ticket(db.Model):
         self.priority = priority
         self.summary = summary
         self.environment = environment
-        # self.ticket_sp_instruction = ticket_sp_instruction
-        # self.assigned_to = assigned_to
+        self.ticket_sp_instruction = ticket_sp_instruction
 
     def __repr__(self):
         return f"{self.ticket_id}:{self.ticket_id}"

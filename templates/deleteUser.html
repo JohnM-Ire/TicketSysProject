@@ -2,6 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Title</title>
+    	<link rel="stylesheet" href="{{ url_for('static', filename='css/ttStyle.css') }}">
+</head>
+<body>
+
+<div id="wrapper">
+
+	<header id="head-home">
+		<ul class="nav-links">
+			<a href="/">
+				<li id="header-links" class="link-buttons">Home</li>
+			</a>
+			<a href="/opentickets">
+				<li id="header-links" class="link-buttons">View Tickets</li>
+			</a>
+			<a href="/teams">
+				<li id="header-links" class="link-buttons">View Teams</li>
+			</a>
+			<a href="/admin_data">
+				<li id="header-links" class="link-buttons">Admin</li>
+			</a>
+			<a href="/logout">
+			<li id="header-links"class="link-buttons">Log Out</li>
+			</a>
+		</ul>
+	</header>
+    <div id="newTeam-container">
+        <div id="newTeam-formholder">
+            <h1>Delete user</h1>
+        <p>Are you sure you want to delete this user ?</p><br>
+
+      <form action='' method="post">
+                <h2><u>User ID</u>: <b>{{ user.user_id }}</b></h2><br>
+
+                <h2><u>Name:</u> <b>{{user.name}}</b></h2><br>
+
+                <h2><u>Password:</u> <b>{{user.password}}</b></h2><br>
+
+                <h2><u>Email:</u> <b> {{ user.email }} </b></h2><br>
+
+                <h2><u>Job Title:</u> <b> {{ user.jobTitle }}</b></h2><br>
+
+                <h2><u>Date Created:</u> <b> {{ user.dateCreated }} </b></h2><br>
+
+                <input type = "submit" value="YES">
+                <button name="cancel" type="" value="Cancel"><a href='/admin_data'>Cancel</a></button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<footer>
+	<p>John Murphy | &copy; 2022</p>
+
+</footer>
+<head>
+    <meta charset="UTF-8">
     <title>Delete User Page</title>
 
 
