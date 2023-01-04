@@ -265,10 +265,6 @@ def Teaminfo(chosen_id):
         groupemail_list.append(email)
 
 
-    # if teaminfo:
-    #     return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
-    # return f"No Team with id {chosen_id} in system"
-
     if request.method == 'GET':
         return render_template('team.html', teaminfo=teaminfo, allMembers=allMembers)
 
@@ -281,8 +277,8 @@ def Teaminfo(chosen_id):
         username = User.query.with_entities(User.name).filter(User.user_id == user).all()
         username = str(username)
         username = username.strip("[ ] , ( ) '")
-        email_source = 'ticketsysJM@gmail.com'
-        password = 'nwggowjpxnhpgvcv'
+        email_source = 'ticketproj89@gmail.com'
+        password = 'gmxpxlivrjcmejis'
         email_list = ['johnamurphy0185@gmail.com', 'john.a.murphy.1989@gmail.com]']
 
         email_subj = 'Team Message'
@@ -300,7 +296,7 @@ def Teaminfo(chosen_id):
             smtp.login(email_source, password)
             smtp.sendmail(email_source, email_list, email.as_string())
 
-        return redirect(request.url)
+        return redirect('/teams')
 
 @app.route('/newticket', methods=['GET', 'POST'])
 def addNewTicket():
@@ -376,6 +372,7 @@ def allOpenTickets():
                            myTickets=myTickets, team_name=team_name)
 
 
+
 @app.route('/ticket/<int:chosen_ticket_id>', methods=['GET', 'POST'])
 def viewTicket(chosen_ticket_id):
     ticketinfo = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.ticket_created,
@@ -386,8 +383,8 @@ def viewTicket(chosen_ticket_id):
 
     teamList = Team.query.all()
     allComments = TComment.query.with_entities(TComment.comm_id, TComment.ticket_id, TComment.comment, TComment.user_id, TComment
-                                               .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id)\
-        .order_by(desc(TComment.timecreated)).all()
+                  .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id)\
+                  .order_by(desc(TComment.timecreated)).all()
 
 
     if request.method == 'GET':
@@ -452,8 +449,8 @@ def editTicket(chosen_ticket_id):
     if request.method == 'POST':
         state = request.form['state']
         if state == 'Fulfilled':
-            email_source = 'ticketsysJM@gmail.com'
-            password = 'nwggowjpxnhpgvcv'
+            email_source = 'ticketproj89@gmail.com'
+            password = 'gmxpxlivrjcmejis'
             email_list = 'johnamurphy0185@gmail.com'
 
             email_subj = 'Your Job ticket ' + str(chosen_ticket_id) + ' request has been fulfilled'
