@@ -386,7 +386,6 @@ def viewTicket(chosen_ticket_id):
                   .timecreated, User.name).join(User, TComment.user_id == User.user_id).filter(TComment.ticket_id == chosen_ticket_id)\
                   .order_by(desc(TComment.timecreated)).all()
 
-
     if request.method == 'GET':
         if ticketinfo:
             return render_template('ticket.html', ticketinfo=ticketinfo, teamList=teamList, allComments=allComments)
@@ -395,8 +394,6 @@ def viewTicket(chosen_ticket_id):
         comment = request.form['comment']
         user_id = session['user']
         ticket_id = chosen_ticket_id
-
-
 
         if comment == "":
             return 'Please go back and enter values for fields'
@@ -448,15 +445,15 @@ def editTicket(chosen_ticket_id):
 
     if request.method == 'POST':
         state = request.form['state']
-        if state == 'Fulfilled':
+        if state == 'Fulfilled' or state == 'Closed Incomplete':
             email_source = 'ticketproj89@gmail.com'
             password = 'gmxpxlivrjcmejis'
             email_list = 'johnamurphy0185@gmail.com'
 
-            email_subj = 'Your Job ticket ' + str(chosen_ticket_id) + ' request has been fulfilled'
+            email_subj = 'Your Job ticket ' + str(chosen_ticket_id) + ' request has been set as ' + str(state)
             email_body = 'To be sent to ' + ticketrequester_email + '\n\nYour Job ticket number '\
-                         + str(chosen_ticket_id) + ' has been fulfilled by ' + username + '.\n\nTicket Description:\n'\
-                         + ticketDesc + '\nThank you,\nTicket Sys Team.'
+                         + str(chosen_ticket_id) + ' has been ' + str(state) + ' by ' + username + '.\n\nTicket Description:\n'\
+                         + ticketDesc + '\n\nThank you,\nTicket Sys Team.'
 
             email = EmailMessage()
             email['From'] = email_source
@@ -502,6 +499,7 @@ def closedTickets():
                     .join(Team, Ticket.team_id == Team.team_id).join(User, Ticket.
                     user_id == User.user_id).filter(and_(or_(Ticket.state == 'Fulfilled', Ticket.state ==
                     'Closed Incomplete'), Ticket.team_id == loggedteam)).all()
+
     myClosedTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id,  User.name, Ticket.
                     ticket_created, Ticket.description, Ticket.state, Ticket.team_id, Team.team_name, User.
                     email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket.ticket_sp_instruction)\

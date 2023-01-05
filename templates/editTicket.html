@@ -12,88 +12,13 @@
 
 	<header id="head-home">
 		<ul class="nav-links">
-			<a href="/">
-				<li id="header-links" class="link-buttons">Home</li>
-			</a>
-			<a href="/opentickets">
-				<li id="header-links" class="link-buttons">View Tickets</li>
-			</a>
-			<a href="/teams">
-				<li id="header-links" class="link-buttons">View Teams</li>
-			</a>
-			<a href="/admin_data">
-				<li id="header-links" class="link-buttons">Admin</li>
-			</a>
-			<a href="/logout">
-			<li id="header-links"class="link-buttons">Log Out</li>
-			</a>
+            <li id="header-links" class="link-buttons"><a href="/">Home</a></li>
+			<li id="header-links" class="link-buttons"><a href="/opentickets">View Tickets</a></li>
+			<li id="header-links" class="link-buttons"><a href="/teams">View Teams</a></li>
+			<li id="header-links" class="link-buttons"><a href="/admin_data">Admin</a></li>
+			<li id="header-links"class="link-buttons"><a href="/logout">Log Out</a></li>
 		</ul>
 	</header>
-<!--    {% for ticket in ticketinfo %}-->
-<!--            <form id="update-form" action='' method = "POST">-->
-<!--                <input type = "submit" value = "Update Ticket" id="userButton">-->
-<!--                <p>Requester's ID: {{ ticket.user_id }}<p>-->
-<!--                <p>Contact Number : {{ ticket.contact_num }}</p>-->
-<!--                <p>Ticket Description: </p>-->
-<!--                <label for="description"></label>-->
-<!--                <textarea readonly name = "description" rows="15" cols="50">{{ticket.description}}</textarea>-->
-<!--&lt;!&ndash;            <form id="update-form" action='' method = "POST">&ndash;&gt;-->
-<!--                <p>State: <select name="state"  class="select-boxes">-->
-<!--                    <option value="{{ ticket.state }}">{{ ticket.state }} </option>-->
-<!--                    <option value="Open">Open</option>-->
-<!--                    <option value="In Progress">In Progress</option>-->
-<!--                    <option value="Waiting">Waiting</option>-->
-<!--                    <option value="Fulfilled">Fulfilled</option>-->
-<!--                    <option value="Closed Incomplete">Closed Incomplete</option>-->
-<!--                            </select>-->
-<!--                </p>-->
-<!--                <label for="team_id"></label>-->
-<!--                <p>Assign job to Team:-->
-<!--                    <select name="team_id" class="select-boxes" >-->
-<!--                    <option placeholder={{ticket.team_name}} value="{{ ticket.team_id }}">{{ ticket.team_name }}</option>-->
-<!--                    {% for t in teamList %}-->
-<!--                        <option placeholder={{t.team_name}} value="{{ t.team_id }}">{{ t.team_name }}</option>-->
-<!--                    {% endfor %}-->
-<!--                    </select></p>-->
-
-<!--                <label for="priority"></label>-->
-<!--                <p>Priority-->
-<!--                <select name="priority" value="{{ ticket.priority }}">-->
-<!--                    <option value="{{ ticket.priority }}">{{ ticket.priority }} </option>-->
-<!--                    <option value="1">1 - Low</option>-->
-<!--                    <option value="2">2 - Moderate</option>-->
-<!--                    <option value="3">3 - High</option>-->
-<!--                    <option value="4">4 - Critical</option>-->
-<!--                </select></p>-->
-<!--                <label for= "summary"></label>-->
-<!--                <p>Summary:</p>-->
-<!--                <textarea readonly name = "summary" rows="5" cols="50">-->
-<!--                {{ ticket.summary }}-->
-<!--                </textarea>-->
-<!--                <label for="environment"></label>-->
-<!--                <p>Environment:-->
-<!--                    <select name="environment"  class="select-boxes">-->
-<!--                         <option value="{{ ticket.environment }}">{{ ticket.environment }} </option>-->
-<!--                        <option value="DEV">Development</option>-->
-<!--                        <option value="QA">Quality Assurance</option>-->
-<!--                        <option value="REL">Release</option>-->
-<!--                        <option value="PROD">Production</option>-->
-<!--                        <option value="Other">Other</option>-->
-<!--                    </select>-->
-<!--                </p>-->
-<!--                <p>Special Instructions </p>-->
-<!--                <label for="ticket_sp_instruction"></label>-->
-<!--                <textarea readonly name = "ticket_sp_instruction" rows="10" cols="50" >{{ ticket.ticket_sp_instruction }}-->
-<!--                </textarea>-->
-<!--                <br>-->
-<!--            </form>-->
-
-<!--    {% endfor %}-->
-
-
-<!--</div>-->
-
-
 
 
     <div id="newtick_holder">
