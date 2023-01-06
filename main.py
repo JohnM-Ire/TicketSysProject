@@ -7,6 +7,7 @@ import smtplib
 # from flask_sqlalchemy import SQLAlchemy
 from TicketDB import db, User, Team, Ticket, TComment, TeamChat
 
+
 import itertools
 import jinja2
 
@@ -40,6 +41,7 @@ def home():
         username = str(username)
         username = username.strip("[ ] , ( ) '")
 
+
         openTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket.
                                                  ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
                                                  Team.team_name, User.
@@ -48,10 +50,12 @@ def home():
                                                 .join(User, Ticket.user_id == User.user_id).filter(
                                                 and_(Ticket.state == 'Open', Ticket.team_id == loggedteam)).limit(3).all()
 
+
         openTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, Ticket.team_id).join(Team,
                                                 Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
                                                 user_id).filter(and_(Ticket.state == 'Open', Ticket.team_id ==
                                                 loggedteam)).count()
+
 
         progTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
                                                  .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
@@ -86,6 +90,8 @@ def home():
                      'Closed Incomplete'), Ticket.user_id == user, Ticket.team_id != loggedteam)).count()
 
         total_closed = int(closedTicketsCount) + int(myClosedTicketsCount)
+
+
         return render_template('home.html', user=user, openTickets=openTickets, openTicketsCount=openTicketsCount,
                                progTickets=progTickets, progTicketsCount=progTicketsCount,
                                closedTicketsCount=closedTicketsCount, total_closed=total_closed, username=username)
@@ -118,6 +124,7 @@ def logout():
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def addUser():
+
     teams = Team.query.all()
 
     if request.method == 'GET':
@@ -320,7 +327,7 @@ def addNewTicket():
         ticket_sp_instruction = request.form['ticket_sp_instruction']
 
         if user_id == "" or description == "" or team_id == "":
-            return 'Please go back and enter values for fields'
+            return 'Please go back and enter values for fields for ticket description and choose a team to assign ticket to.'
 
         else:
             newTickets = Ticket(user_id=user_id, description=description, state=state, team_id=team_id, contact_num=contact_num,

@@ -343,7 +343,8 @@ td{
 #space_maker{
 	float: left;
 	width: 100%;
-	background-color: red;
+	padding-left: 50px;
+	font-size: 26px;
 	box-sizing: border-box;
 	height 30px;
 
