@@ -45,11 +45,6 @@ class User(db.Model):
         return f"{self.user_id}:{self.user_id}"
 
 
-# Consider a Ticket update field, where when we update the ticket state, the current DAteTime() is entered/Updated
-# class Assigned:
-#     pass
-
-
 class Ticket(db.Model):
     __tablename__ = "tickettable"
 
@@ -80,22 +75,6 @@ class Ticket(db.Model):
 
     def __repr__(self):
         return f"{self.ticket_id}:{self.ticket_id}"
-
-
-# class Assigned(db.Model):
-#     __tablename__ = "assignedtickettable"
-#     assignment_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-#     assignedUserRel = db.relationship("User", backref='Assigned')
-#     ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
-#     assignUserTicketRel = db.relationship("Ticket", backref='Assigned')
-#
-#     def __init__(self, user_id, ticket_id):
-#         self.user_id = user_id
-#         self.ticket_id = ticket_id
-#
-#     def __repr__(self):
-#         return f"{self.assignment_id}:{self.assignment_id}"
 
 
 class TComment(db.Model):
@@ -134,34 +113,3 @@ class TeamChat(db.Model):
 
     def __repr__(self):
         return f"{self.teamcomment_id}:{self.teamcomment_id}"
-
-
-
-# class CompleteTicket(db.Model):
-#     __tablename__ = "completetable"
-#
-#     closedticket_id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-#     ticket_id = db.Column(db.Integer, db.ForeignKey(Ticket.ticket_id))
-#     ticketrelation = db.relationship("Ticket", backref='CompleteTicket')
-#     user_id = db.Column(db.Integer, db.ForeignKey(User.user_id))
-#     requested_user = db.relationship("User", backref='CompleteTicket')
-#     ticket_completed = db.Column(db.String(50), default=func.now())
-#     completed_by = db.Column(db.String(50))
-#     complete_comment = db.Column(db.String(300))
-#
-#
-#
-#     def __init__(self, closedticket_id, ticket_id, user_id, ticket_completed, completed_by, complete_comment):
-#         self.closedticket_id = closedticket_id
-#         self.ticket_id = ticket_id
-#         self.user_id = user_id
-#         self.ticket_completed = ticket_completed
-#         self.completed_by = completed_by
-#         self.complete_comment = complete_comment
-#
-#
-#     def __repr__(self):
-#         return f"{self.closedticket_id}:{self.closedticket_id}"
-
-
-

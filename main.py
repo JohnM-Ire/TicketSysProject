@@ -4,9 +4,8 @@ from datetime import datetime
 import ssl
 from email.message import EmailMessage
 import smtplib
-# from flask_sqlalchemy import SQLAlchemy
-from TicketDB import db, User, Team, Ticket, TComment, TeamChat
 
+from TicketDB import db, User, Team, Ticket, TComment, TeamChat
 
 import itertools
 import jinja2
@@ -14,8 +13,6 @@ import jinja2
 app = Flask(__name__) # creates a Flask instance in your main module
 app.secret_key = "bbrm36hy"
 
-# app.config['SECRET_KEY'] = "JohnKey"
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TicketDB.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jMovie.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
@@ -69,13 +66,6 @@ def home():
                                                 Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
                                                 user_id).filter(and_(Ticket.state == 'In Progress'), (Ticket.
                                                 team_id == loggedteam)).count()
-
-        # waitTickets = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, User.name, Ticket
-        #                                          .ticket_created, Ticket.description, Ticket.state, Ticket.team_id,
-        #                                          Team.team_name, User.email, Ticket.priority, Ticket.summary, Ticket.environment, Ticket
-        #                                          .ticket_sp_instruction).join(Team,Ticket.team_id == Team.team_id).join(User,
-        #                                         Ticket.user_id == User.user_id).filter(and_(Ticket.state == 'Waiting'),
-        #                                         (Ticket.team_id == loggedteam)).limit(2).all()
 
         closedTicketsCount = Ticket.query.with_entities(Ticket.ticket_id, Ticket.user_id, Ticket.team_id).join(Team,
                                                    Ticket.team_id == Team.team_id).join(User, Ticket.user_id == User.
@@ -181,18 +171,6 @@ def addTeam():
             db.session.add(newTeam)
             db.session.commit()     # writes changes to the database
             return redirect('/admin_data')
-
-# NEED TO ACCOUNT FOR IF WE DELETE A TEAM WHAT HAPPENS TO THE USERS ASSIGNED TO THOSE TEAMS
-# @app.route('/delteam/<int:user_id>', methods=['GET', 'POST'])
-# def DeleteSingleTeam(team_id):
-#     team = Team.query.filter_by(user_id=user_id).first()
-#     if request.method == 'POST':
-#         if user:
-#             db.session.delete(user)
-#             db.session.commit()
-#             return redirect('/admin_data')
-#
-#     return render_template('deleteUser.html', user=user)
 
 @app.route('/admin_data')
 def retrieveUsers():
